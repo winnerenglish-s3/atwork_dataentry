@@ -33,11 +33,10 @@
           ref="email"
           outlined
           dense
-          :readonly="$route.name == 'accountEdit'"
           :rules="[value => !!value ]"
         ></q-input>
       </div>
-      <div v-if="$route.name != 'accountEdit'">
+      <div>
         <div>รหัสผ่าน</div>
         <q-input
           v-model.trim="dataEmployee.password"
@@ -48,10 +47,10 @@
           lazy-rules
         ></q-input>
       </div>
-      <div v-else class="q-pb-md">
+      <!-- <div v-else class="q-pb-md">
         <div>รหัสผ่าน</div>
         <q-input value="123456789" type="password" ref="password" outlined dense readonly></q-input>
-      </div>
+      </div>-->
       <div class="q-pb-md">
         <div>บทเรียนเริ่มต้น</div>
         <q-select
@@ -122,38 +121,12 @@ export default {
         return;
       }
 
-      let apiURL =
-        "https://us-central1-atwork-dee11.cloudfunctions.net/atworkFunctions/user/create";
-      this.loadingShow();
       if (this.$route.name != "accountEdit") {
-        let postData = {
-          email: this.dataEmployee.email,
-          password: this.dataEmployee.password,
-          displayName: this.dataEmployee.name,
-          accessProgram: ["FrontEnd"],
-          dataEntryPermissions: [],
-        };
-        let userRecord = await axios.post(apiURL, postData);
-        if (userRecord.data.code) {
-          if (userRecord.data.code == "auth/email-already-exists") {
-            this.$q.notify({
-              message: "มีอีเมลนี้ในระบบแล้ว",
-              color: "red",
-            });
-          } else {
-            this.$q.notify({
-              message: "กรุณาตรวจสอบข้อมูลใหม่อีกครั้ง",
-              color: "red",
-            });
-          }
-          this.loadingHide();
-          return;
-        }
-
-        let uid = userRecord.data.uid;
+        this.loadingShow();
+        // ADD MODE
         db.collection("employee")
           .add({
-            uid: uid,
+            password: this.dataEmployee.password,
             hotelId: this.$route.params.hotelId,
             departmentId: this.dataEmployee.departmentId,
             name: this.dataEmployee.name,
@@ -167,25 +140,82 @@ export default {
             this.isAddDialogSucess = true;
           });
       } else {
-        let apiURL =
-          "https://us-central1-atwork-dee11.cloudfunctions.net/atworkFunctions/user/update";
-        let postData = {
-          displayName: this.dataEmployee.name,
-          password: this.dataEmployee.password,
-          uid: this.dataEmployee.uid,
-          accessProgram: ["FrontEnd"],
-        };
-        let axiosData = await axios.post(apiURL, postData);
-        let updateData = { ...this.dataEmployee };
-        delete updateData.password;
+        // EDIT MODE
         db.collection("employee")
           .doc(this.$route.params.employeeId)
-          .update(updateData)
+          .update(this.dataEmployee)
           .then(() => {
             this.loadingHide();
             this.isAddDialogSucess = true;
           });
       }
+
+      // return;
+
+      // let apiURL =
+      //   "https://us-central1-atwork-dee11.cloudfunctions.net/atworkFunctions/user/create";
+
+      // if (this.$route.name != "accountEdit") {
+      //   let postData = {
+      //     email: this.dataEmployee.email,
+      //     password: this.dataEmployee.password,
+      //     displayName: this.dataEmployee.name,
+      //     accessProgram: ["FrontEnd"],
+      //     dataEntryPermissions: [],
+      //   };
+      //   let userRecord = await axios.post(apiURL, postData);
+      //   if (userRecord.data.code) {
+      //     if (userRecord.data.code == "auth/email-already-exists") {
+      //       this.$q.notify({
+      //         message: "มีอีเมลนี้ในระบบแล้ว",
+      //         color: "red",
+      //       });
+      //     } else {
+      //       this.$q.notify({
+      //         message: "กรุณาตรวจสอบข้อมูลใหม่อีกครั้ง",
+      //         color: "red",
+      //       });
+      //     }
+      //     this.loadingHide();
+      //     return;
+      //   }
+
+      //   let uid = userRecord.data.uid;
+      //   db.collection("employee")
+      //     .add({
+      //       uid: uid,
+      //       hotelId: this.$route.params.hotelId,
+      //       departmentId: this.dataEmployee.departmentId,
+      //       name: this.dataEmployee.name,
+      //       email: this.dataEmployee.email,
+      //       startLevelId: this.dataEmployee.startLevelId,
+      //       tel: this.dataEmployee.tel,
+      //       star: 0,
+      //     })
+      //     .then(() => {
+      //       this.loadingHide();
+      //       this.isAddDialogSucess = true;
+      //     });
+      // } else {
+      //   let apiURL =
+      //     "https://us-central1-atwork-dee11.cloudfunctions.net/atworkFunctions/user/update";
+      //   let postData = {
+      //     displayName: this.dataEmployee.name,
+      //     password: this.dataEmployee.password,
+      //     uid: this.dataEmployee.uid,
+      //     accessProgram: ["FrontEnd"],
+      //   };
+      //   let axiosData = await axios.post(apiURL, postData);
+      //   let updateData = { ...this.dataEmployee };
+      //   delete updateData.password;
+      //   db.collection("employee")
+      //     .doc(this.$route.params.employeeId)
+      //     .update(updateData)
+      //     .then(() => {
+      //       this.loadingHide();
+      //       this.isAddDialogSucess = true;
+      //     });
+      // }
     },
     cancelAddEmployee() {
       this.$router.push("/accountMain");

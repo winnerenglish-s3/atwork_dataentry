@@ -261,7 +261,7 @@ import { db, axios } from "../router";
 import dialogCenter from "../components/dialogSetting";
 export default {
   components: {
-    dialogCenter
+    dialogCenter,
   },
   data() {
     return {
@@ -287,19 +287,19 @@ export default {
       isSnapShot: "",
       isShowDeleteDialogEmployee: false,
       dataEmployee: "",
-      nameDepartmantOld: ""
+      nameDepartmantOld: "",
     };
   },
   methods: {
     loadHotelList() {
       db.collection("hotel")
         .get()
-        .then(doc => {
+        .then((doc) => {
           if (doc.size) {
-            doc.forEach(element => {
+            doc.forEach((element) => {
               let temp = {
                 value: element.id,
-                label: element.data().name
+                label: element.data().name,
               };
               this.hotelList.push(temp);
             });
@@ -319,11 +319,11 @@ export default {
       this.$router.push("hotelMain");
     },
     loadDepartment() {
-      this.isSnapShot = db.collection("department").onSnapshot(doc => {
+      this.isSnapShot = db.collection("department").onSnapshot((doc) => {
         let temp = [];
-        doc.forEach(element => {
+        doc.forEach((element) => {
           let temp1 = {
-            departmentId: element.id
+            departmentId: element.id,
           };
 
           let final = { ...temp1, ...element.data() };
@@ -337,7 +337,7 @@ export default {
 
     selectDepartment() {
       this.deparmentSelect = this.departmentAll.filter(
-        x => x.hotelId == this.hotelSelectedId
+        (x) => x.hotelId == this.hotelSelectedId
       );
       this.loadEmployee();
     },
@@ -376,7 +376,7 @@ export default {
         db.collection("department")
           .add({
             hotelId: this.hotelSelectedId,
-            name: this.departmentName
+            name: this.departmentName,
           })
           .then(() => {
             this.loadingHide();
@@ -415,7 +415,7 @@ export default {
         this.clickedToolbar = "";
       } else {
         this.employeeList = this.employeeAll.filter(
-          x => x.departmentId == data.departmentId
+          (x) => x.departmentId == data.departmentId
         );
         this.clickedToolbar = data.departmentId;
       }
@@ -424,9 +424,9 @@ export default {
       this.isOnSnapshotEmployee = db
         .collection("employee")
         .where("hotelId", "==", this.hotelSelectedId)
-        .onSnapshot(doc => {
+        .onSnapshot((doc) => {
           let temp = [];
-          doc.forEach(element => {
+          doc.forEach((element) => {
             temp.push({ ...element.data(), employeeId: element.id });
           });
           temp.sort((a, b) => {
@@ -446,7 +446,7 @@ export default {
       db.collection("employee")
         .where("departmentId", "==", data.departmentId)
         .get()
-        .then(doc => {
+        .then((doc) => {
           if (doc.size > 0) {
             this.isShowNoDeleteDialog = true;
           } else {
@@ -503,7 +503,7 @@ export default {
         this.dataEmployee.uid;
       let deleteEmp = await axios.get(apiURL);
       let departmentCurrent = this.departmentAll.filter(
-        x => x.departmentId == this.clickedToolbar
+        (x) => x.departmentId == this.clickedToolbar
       )[0];
 
       db.collection("employee")
@@ -511,7 +511,7 @@ export default {
         .delete()
         .then(() => {
           this.employeeList = this.employeeAll.filter(
-            x => x.departmentId == departmentCurrent.departmentId
+            (x) => x.departmentId == departmentCurrent.departmentId
           );
           this.clickedToolbar = departmentCurrent.departmentId;
           if (departmentCurrent.length == 0) {
@@ -521,7 +521,7 @@ export default {
           this.loadingHide();
           this.isDeleteDialogSucess = true;
         });
-    }
+    },
   },
   mounted() {
     this.loadDepartment();
@@ -535,7 +535,7 @@ export default {
     if (typeof this.isOnSnapshotEmployee == "function") {
       this.isOnSnapshotEmployee();
     }
-  }
+  },
 };
 </script>
 
