@@ -1,0 +1,7 @@
+[0618/102356.114:ERROR:settings.cc(320)] Settings magic is not 1129342067
+[0622/141252.423:ERROR:process_info.cc(329)] VirtualQueryEx: Access is denied. (0x5)
+[0622/141252.424:ERROR:process_info.cc(556)] ReadMemoryInfo failed
+[0622/141252.424:ERROR:scoped_process_suspend.cc(40)] NtResumeProcess: An attempt was made to access an exiting process. (0xc000010a)
+[0709/074601.981:ERROR:settings.cc(320)] Settings magic is not 1129342067
+[0714/161416.030:ERROR:settings.cc(320)] Settings magic is not 1129342067
+[0814/155147.847:ERROR:directory_reader_win.cc(43)] FindFirstFile: The system cannot find the path specified. (0x3)
