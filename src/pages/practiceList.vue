@@ -15,7 +15,13 @@
         </div>
         <div class="shadow-3 bg-white" style="height: calc(100vh - 64px);overflow-y:auto">
           <q-list class="rounded-borders" v-for="(itemLv,index) in levelList" :key="index">
-            <q-expansion-item @click="showUnit(itemLv)" group="unitgroup">
+            <q-expansion-item
+              :value="getLevel.levelId== itemLv.levelId? true: false"
+              @show="test()"
+              @click="showUnit(itemLv)"
+              group="unitgroup"
+            >
+              <!--  default-opened -->
               <template v-slot:header>
                 <q-item-section>
                   {{ itemLv.name }}
@@ -30,12 +36,16 @@
                   ></q-badge>
                 </q-item-section>
               </template>
-              <q-card v-show="unitListShow.length==0">
+              <!-- <q-card v-show="unitListShow.length==0">
                 <div align="center" class="q-py-md">
                   <u class="cursor-pointer" @click="gotoAddLesson()">เพิ่มบทเรียน</u>
                 </div>
-              </q-card>
-              <q-card v-for="(itemUnit,index2) in unitListShow" :key="index2">
+              </q-card>-->
+              <q-card
+                v-show="unitListShow.length"
+                v-for="(itemUnit,index2) in unitListShow"
+                :key="index2"
+              >
                 <div
                   class="row q-px-md q-py-sm relative-position cursor-pointer"
                   :class="activeKey==itemUnit.unitId || unitId == itemUnit.unitId ?'bg-blue-grey-4':''"
@@ -177,7 +187,9 @@ export default {
           return a.order - b.order;
         });
         this.unitList = temp;
-        this.showUnit(this.currentLevelClick);
+        // if (this.$q.sessionStorage.has("setLevel")) {
+        // }
+        this.showUnit(this.$q.sessionStorage.getItem("setLevel"));
         if (this.$q.platform.is.desktop) {
           this.gotoEdit(
             // ดึงข้อมูลกลับมาใช้
@@ -189,15 +201,17 @@ export default {
         }
       });
     },
+    test() {
+      console.log("test");
+    },
     showUnit(value) {
       if (value) {
-        this.$q.sessionStorage.set("setLevel", value);
+        this.$q.sessionStorage.set("setLevel", { levelId: value.levelId });
       }
       this.getLevel = this.$q.sessionStorage.getItem("setLevel");
       this.activeKey = "";
-      this.currentLevelClick = value;
       this.unitListShow = this.unitList.filter(
-        (x) => x.levelId == value.levelId
+        (x) => x.levelId == this.getLevel.levelId
       );
     },
   },
