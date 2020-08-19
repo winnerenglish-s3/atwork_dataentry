@@ -29,8 +29,8 @@
       <div>
         <div>รหัสพนักงาน</div>
         <q-input
-          v-model.trim="dataEmployee.email"
-          ref="email"
+          v-model.trim="dataEmployee.username"
+          ref="username"
           outlined
           dense
           :rules="[value => !!value ]"
@@ -96,7 +96,7 @@ export default {
         departmentId: "",
         name: "",
         tel: "",
-        email: "",
+        username: "",
         password: "",
         startLevelId: "",
         star: 0,
@@ -110,13 +110,13 @@ export default {
       // check validate
       this.$refs.name.validate();
       this.$refs.tel.validate();
-      this.$refs.email.validate();
+      this.$refs.username.validate();
       this.$refs.password.validate();
       if (
         this.$refs.name.hasError ||
         this.$refs.tel.hasError ||
         this.$refs.password.hasError ||
-        this.$refs.email.hasError
+        this.$refs.username.hasError
       ) {
         return;
       }
@@ -130,7 +130,7 @@ export default {
             hotelId: this.$route.params.hotelId,
             departmentId: this.dataEmployee.departmentId,
             name: this.dataEmployee.name,
-            email: this.dataEmployee.email,
+            username: this.dataEmployee.username,
             startLevelId: this.dataEmployee.startLevelId,
             tel: this.dataEmployee.tel,
             star: 0,
