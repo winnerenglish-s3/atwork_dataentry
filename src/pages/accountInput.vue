@@ -142,8 +142,9 @@ export default {
       } else {
         // EDIT MODE
         db.collection("employee")
-          .doc(this.$route.params.employeeId)
-          .update(this.dataEmployee)
+          // .doc(this.$route.params.employeeId)
+          .add(this.dataEmployee)
+          // .update(this.dataEmployee)
           .then(() => {
             this.loadingHide();
             this.isAddDialogSucess = true;
