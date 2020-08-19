@@ -15,7 +15,12 @@
         </div>
         <div class="shadow-3 bg-white" style="height: calc(100vh - 64px);overflow-y:auto">
           <q-list class="rounded-borders" v-for="(itemLv,index) in levelList" :key="index">
-            <q-expansion-item @click="showUnit(itemLv)" group="unitgroup">
+            <q-expansion-item
+              :value="getLevel== itemLv.levelId? true: false"
+              @click="showUnit(itemLv.levelId)"
+              group="unitgroup"
+            >
+              <!--  default-opened -->
               <template v-slot:header>
                 <q-item-section>
                   {{ itemLv.name }}
@@ -30,17 +35,21 @@
                   ></q-badge>
                 </q-item-section>
               </template>
-              <q-card v-show="unitListShow.length==0">
+              <!-- <q-card v-show="unitListShow.length==0">
                 <div align="center" class="q-py-md">
                   <u class="cursor-pointer" @click="gotoAddLesson()">เพิ่มบทเรียน</u>
                 </div>
-              </q-card>
-              <q-card v-for="(itemUnit,index2) in unitListShow" :key="index2">
+              </q-card>-->
+              <q-card
+                v-show="unitListShow.length"
+                v-for="(itemUnit,index2) in unitListShow"
+                :key="index2"
+              >
                 <div
                   class="row q-px-md q-py-sm relative-position cursor-pointer"
                   :class="activeKey==itemUnit.unitId || unitId == itemUnit.unitId ?'bg-blue-grey-4':''"
                   v-ripple
-                  @click="gotoEdit(itemUnit, index2,itemLv.name),gotoEditMode(itemUnit)"
+                  @click="gotoEdit(itemUnit, index2,itemLv.name)"
                 >
                   <div class="col">
                     {{itemUnit.order}} -
@@ -101,6 +110,7 @@ export default {
       currentLevelClick: "",
       snapLevel: "",
       snapUnit: "",
+      getLevel: "",
     };
   },
   methods: {
@@ -111,20 +121,15 @@ export default {
       this.showUnit(val.levelId);
       this.isShowPracticeMain = true;
     },
-    gotoEditMode(itemUnit) {
-      if (this.$q.platform.is.desktop) {
-        this.isShowPracticeMain = true;
-      } else {
-        this.$router.push(
-          "/practiceMain/" + itemUnit.levelId + "/" + itemUnit.unitId + "/"
-        );
-      }
-    },
     gotoEdit(itemUnit, num, levelName) {
+      // โหลดครั้งแรก && คลิกดูข้อมูล
+      // เช็คค่า ก่อน ว่ามีข้อมูลเก็บอยูไหม
       if (this.$q.platform.is.desktop) {
         if (itemUnit == null) {
+          // ไม่มีข้อมูล
           this.isShowPracticeMain = false;
         } else {
+          // มีข้อมูล
           this.isShowPracticeMain = true;
           this.activeKey = itemUnit.unitId;
           this.levelId = itemUnit.levelId;
@@ -133,10 +138,15 @@ export default {
           this.unitName = itemUnit.label;
           this.levelName = levelName;
           this.practiceListOrder = itemUnit.order;
+          // เก็บข้อมูลไว้
           this.$q.sessionStorage.set("setItem", itemUnit);
           this.$q.sessionStorage.set("setNum", num);
           this.$q.sessionStorage.set("setLevelName", levelName);
         }
+      } else {
+        this.$router.push(
+          "/practiceMain/" + itemUnit.levelId + "/" + itemUnit.unitId
+        );
       }
     },
 
@@ -176,32 +186,28 @@ export default {
           return a.order - b.order;
         });
         this.unitList = temp;
-        this.showUnit(
-          this.currentLevelClick,
-          this.$q.sessionStorage.getItem("setLevel")
-        );
-        this.gotoEdit(
-          this.$q.sessionStorage.getItem("setItem"),
-          this.$q.sessionStorage.getItem("setNum"),
-          this.$q.sessionStorage.getItem("setLevelName")
-        );
+        // if (this.$q.sessionStorage.has("setLevel")) {
+        // }
+        this.showUnit(this.$q.sessionStorage.getItem("setLevel"));
+        if (this.$q.platform.is.desktop) {
+          this.gotoEdit(
+            // ดึงข้อมูลกลับมาใช้
+            // ถ้าไม่มีข้อมูล มันจะมอง เป็น null เสมอ
+            this.$q.sessionStorage.getItem("setItem"),
+            this.$q.sessionStorage.getItem("setNum"),
+            this.$q.sessionStorage.getItem("setLevelName")
+          );
+        }
       });
     },
-    showUnit(value, val) {
-      if (value) {
+
+    showUnit(value) {
+      if (value != null) {
         this.$q.sessionStorage.set("setLevel", value);
-      } else {
-        if (val == null) {
-          this.isShowPracticeMain = false;
-        } else {
-          value = val;
-        }
       }
+      this.getLevel = value;
       this.activeKey = "";
-      this.currentLevelClick = value;
-      this.unitListShow = this.unitList.filter(
-        (x) => x.levelId == value.levelId
-      );
+      this.unitListShow = this.unitList.filter((x) => x.levelId == value);
     },
   },
   mounted() {
