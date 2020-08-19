@@ -317,7 +317,11 @@ export default {
           back: "แบบฝึกหัด",
           backPath: "/practiceList",
           back2: "",
-          backPath2: "",
+          backPath2:
+            "/practiceMain/" +
+            this.$route.params.levelId +
+            "/" +
+            this.$route.params.unitId,
           type: "flashcardMain",
         },
         // NOTE : Router Flashcard Add
@@ -344,7 +348,11 @@ export default {
           back: "แบบฝึกหัด",
           backPath: "/practiceList",
           back2: "",
-          backPath2: "",
+          backPath2:
+            "/practiceMain/" +
+            this.$route.params.levelId +
+            "/" +
+            this.$route.params.unitId,
           type: "multipleMain",
         },
         // NOTE : Router Multiple Add
@@ -371,7 +379,11 @@ export default {
           back: "แบบฝึกหัด",
           backPath: "/practiceList",
           back2: "",
-          backPath2: "",
+          backPath2:
+            "/practiceMain/" +
+            this.$route.params.levelId +
+            "/" +
+            this.$route.params.unitId,
           type: "expressionMain",
         },
         // NOTE : Router Expression Add
@@ -397,7 +409,11 @@ export default {
           back: "แบบฝึกหัด",
           backPath: "/practiceList",
           back2: "",
-          backPath2: "",
+          backPath2:
+            "/practiceMain/" +
+            this.$route.params.levelId +
+            "/" +
+            this.$route.params.unitId,
           type: "vdoMain",
         },
         {
