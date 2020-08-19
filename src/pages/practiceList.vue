@@ -16,9 +16,8 @@
         <div class="shadow-3 bg-white" style="height: calc(100vh - 64px);overflow-y:auto">
           <q-list class="rounded-borders" v-for="(itemLv,index) in levelList" :key="index">
             <q-expansion-item
-              :value="getLevel.levelId== itemLv.levelId? true: false"
-              @show="test()"
-              @click="showUnit(itemLv)"
+              :value="getLevel== itemLv.levelId? true: false"
+              @click="showUnit(itemLv.levelId)"
               group="unitgroup"
             >
               <!--  default-opened -->
@@ -201,18 +200,14 @@ export default {
         }
       });
     },
-    test() {
-      console.log("test");
-    },
+
     showUnit(value) {
-      if (value) {
-        this.$q.sessionStorage.set("setLevel", { levelId: value.levelId });
+      if (value != null) {
+        this.$q.sessionStorage.set("setLevel", value);
       }
-      this.getLevel = this.$q.sessionStorage.getItem("setLevel");
+      this.getLevel = value;
       this.activeKey = "";
-      this.unitListShow = this.unitList.filter(
-        (x) => x.levelId == this.getLevel.levelId
-      );
+      this.unitListShow = this.unitList.filter((x) => x.levelId == value);
     },
   },
   mounted() {
