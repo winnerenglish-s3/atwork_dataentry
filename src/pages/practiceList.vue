@@ -35,11 +35,11 @@
                   ></q-badge>
                 </q-item-section>
               </template>
-              <!-- <q-card v-show="unitListShow.length==0">
+              <q-card v-show="unitListShow.length==0">
                 <div align="center" class="q-py-md">
                   <u class="cursor-pointer" @click="gotoAddLesson()">เพิ่มบทเรียน</u>
                 </div>
-              </q-card>-->
+              </q-card>
               <q-card
                 v-show="unitListShow.length"
                 v-for="(itemUnit,index2) in unitListShow"
