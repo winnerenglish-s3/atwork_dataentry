@@ -483,7 +483,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style >
 .font {
   font-size: 12px;
 }
