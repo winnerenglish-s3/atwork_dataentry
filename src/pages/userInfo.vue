@@ -38,7 +38,7 @@
               :class="isPasswordClick == true? 'bg-blue-grey-4' : 'bg-white'"
               v-ripple
             >
-              <div class="col-6 q-pa-md q-py-lg">
+              <div class="col-6 q-pa-md">
                 <div class="text-subtitle1">รหัสผ่าน</div>
               </div>
               <div class="col-6 q-pr-sm" align="right">
@@ -123,7 +123,7 @@ import userSettingMobile from "./userSettingMobile.vue";
 export default {
   components: {
     userSetting,
-    dialogSetting
+    dialogSetting,
   },
   data() {
     return {
@@ -137,7 +137,7 @@ export default {
       isSuccessData: false,
       isToDialog: false,
       dialogResetPassword: false,
-      authData: ""
+      authData: "",
     };
   },
   methods: {
@@ -145,10 +145,10 @@ export default {
       let _this = this;
       auth
         .sendPasswordResetEmail(this.userInfo.email)
-        .then(function() {
+        .then(function () {
           _this.isSuccessData = true;
         })
-        .catch(function(error) {
+        .catch(function (error) {
           // console.log(error);
         });
     },
@@ -178,7 +178,7 @@ export default {
       } else {
         this.$router.push({
           name: "userSettingMobile",
-          params: { type: "1", userInfo: this.userInfo }
+          params: { type: "1", userInfo: this.userInfo },
         });
       }
     },
@@ -211,12 +211,12 @@ export default {
       // }
     },
     loadUserData() {
-      this.authData = auth.onAuthStateChanged(user => {
+      this.authData = auth.onAuthStateChanged((user) => {
         if (user) {
           this.userInfo = user;
         }
       });
-    }
+    },
   },
   async mounted() {
     this.loadUserData();
@@ -224,7 +224,7 @@ export default {
   },
   beforeDestroy() {
     this.authData = "";
-  }
+  },
 };
 </script>
 
