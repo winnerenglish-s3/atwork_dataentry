@@ -142,9 +142,9 @@ export default {
       } else {
         // EDIT MODE
         db.collection("employee")
-          // .doc(this.$route.params.employeeId)
-          .add(this.dataEmployee)
-          // .update(this.dataEmployee)
+          .doc(this.$route.params.employeeId)
+          // .add(this.dataEmployee)
+          .update(this.dataEmployee)
           .then(() => {
             this.loadingHide();
             this.isAddDialogSucess = true;
@@ -254,6 +254,7 @@ export default {
     loadLevel() {
       this.loadingShow();
       db.collection("level")
+        .where("status", "==", true)
         .get()
         .then((doc) => {
           let temp = [];

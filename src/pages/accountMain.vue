@@ -265,7 +265,9 @@ export default {
   },
   data() {
     return {
-      hotelSelectedId: "",
+      hotelSelectedId: this.$q.sessionStorage.has("hotelSelectedId")
+        ? this.$q.sessionStorage.getItem("hotelSelectedId")
+        : "",
       hotelList: [],
       departmentAll: [],
       deparmentSelect: [],
@@ -306,7 +308,10 @@ export default {
             this.hotelList.sort((a, b) => {
               return a.name > b.name ? 1 : -1;
             });
-            this.hotelSelectedId = this.hotelList[0].value;
+            // this.hotelSelectedId = this.hotelList[0].value;
+            this.hotelSelectedId = this.$q.sessionStorage.has("hotelSelectedId")
+              ? this.$q.sessionStorage.getItem("hotelSelectedId")
+              : this.hotelList[0].value;
           } else {
             this.hotelSelectedId = "กรุณาเพิ่มกิจการ";
           }
@@ -339,6 +344,7 @@ export default {
       this.deparmentSelect = this.departmentAll.filter(
         (x) => x.hotelId == this.hotelSelectedId
       );
+      this.$q.sessionStorage.set("hotelSelectedId", this.hotelSelectedId);
       this.loadEmployee();
     },
     cancelAddDepartment() {
@@ -498,10 +504,10 @@ export default {
     async confirmDeleteEmployee() {
       this.loadingShow();
       this.isShowDeleteDialogEmployee = false;
-      let apiURL =
-        "https://us-central1-atwork-dee11.cloudfunctions.net/atworkFunctions/user/delete?uid=" +
-        this.dataEmployee.uid;
-      let deleteEmp = await axios.get(apiURL);
+      // let apiURL =
+      //   "https://us-central1-atwork-dee11.cloudfunctions.net/atworkFunctions/user/delete?uid=" +
+      //   this.dataEmployee.uid;
+      // let deleteEmp = await axios.get(apiURL);
       let departmentCurrent = this.departmentAll.filter(
         (x) => x.departmentId == this.clickedToolbar
       )[0];
