@@ -115,7 +115,7 @@ import userInfo from "../pages/userInfo.vue";
 import dialogSetting from "../components/dialogSetting.vue";
 export default {
   components: {
-    dialogSetting
+    dialogSetting,
   },
   props: ["infoData", "userInfo"],
   data() {
@@ -132,7 +132,7 @@ export default {
       isLogOutPage: false,
       isDialogSuccess: false,
       dialogEmail: false,
-      dialogDontChangeData: false
+      dialogDontChangeData: false,
     };
   },
   watch: {
@@ -141,7 +141,7 @@ export default {
       if (this.infoData == "1") {
         this.$refs.name.resetValidation();
       }
-    }
+    },
   },
   methods: {
     backMainPage() {
@@ -162,7 +162,7 @@ export default {
 
       let updateData = await axios.post(apiURL, {
         displayName: this.name,
-        uid: this.userInfo.uid
+        uid: this.userInfo.uid,
       });
       this.loadingHide();
       this.isDialogSuccess = true;
@@ -174,10 +174,10 @@ export default {
       let _this = this;
       auth
         .sendPasswordResetEmail(this.userInfo.email)
-        .then(function() {
+        .then(function () {
           _this.dialogEmail = true;
         })
-        .catch(function(error) {
+        .catch(function (error) {
           // console.log(error);
         });
     },
@@ -187,17 +187,15 @@ export default {
     },
     async logOutAll() {
       this.loadingShow();
-      let genCode = Math.random()
-        .toString(36)
-        .substring(7);
+      let genCode = Math.random().toString(36).substring(7);
 
       let signOut = await db
         .collection("user_admin")
         .doc(this.userInfo.userId)
         .update({ loginKey: genCode });
-    }
+    },
   },
-  mounted() {}
+  mounted() {},
 };
 </script>
 

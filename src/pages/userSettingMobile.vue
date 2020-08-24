@@ -10,7 +10,7 @@
 import userSetting from "../components/userSetting";
 export default {
   components: {
-    userSetting
+    userSetting,
   },
   data() {
     return {
@@ -20,7 +20,7 @@ export default {
       isPasswordClick: false,
       isLogOutClick: false,
       infoSetting: false,
-      mainPage: true
+      mainPage: true,
     };
   },
   methods: {
@@ -30,16 +30,16 @@ export default {
       this.isLogOutClick = false;
       this.infoSetting = false;
       this.mainPage = true;
-      this.userInfo = await this.getUserInfo(
-        this.$q.localStorage.getItem("uid")
-      );
-    }
+      // this.userInfo = await this.getUserInfo(
+      //   this.$q.localStorage.getItem("uid")
+      // );
+    },
   },
   mounted() {
     if (this.$route.params.userInfo == undefined) {
       this.$router.push("/userInfo");
     }
-  }
+  },
 };
 </script>
 
