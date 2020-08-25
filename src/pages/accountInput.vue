@@ -101,6 +101,7 @@ export default {
         startLevelId: "",
         star: 0,
       },
+      usernameOld: "",
       departmentAll: "",
       isAddDialogSucess: false,
     };
@@ -122,7 +123,22 @@ export default {
       }
 
       if (this.$route.name != "accountEdit") {
+        let getData = await db
+          .collection("employee")
+          .where("username", "==", this.dataEmployee.username)
+          .get();
+
+        if (getData.size) {
+          this.$q.notify({
+            message: "มีรหัสผู้ใช้นี้อยู่ในระบบแล้ว",
+            color: "negative",
+            position: "top",
+          });
+          return;
+        }
+
         this.loadingShow();
+
         // ADD MODE
         db.collection("employee")
           .add({
@@ -140,6 +156,22 @@ export default {
             this.isAddDialogSucess = true;
           });
       } else {
+        if (this.dataEmployee.username != this.usernameOld) {
+          let getData = await db
+            .collection("employee")
+            .where("username", "==", this.dataEmployee.username)
+            .get();
+
+          if (getData.size) {
+            this.$q.notify({
+              message: "มีรหัสผู้ใช้นี้อยู่ในระบบแล้ว",
+              color: "negative",
+              position: "top",
+            });
+            return;
+          }
+        }
+
         // EDIT MODE
         db.collection("employee")
           .doc(this.$route.params.employeeId)
@@ -279,6 +311,7 @@ export default {
         .get()
         .then((doc) => {
           this.dataEmployee = doc.data();
+          this.usernameOld = doc.data().username;
         });
     },
     addDialogSucess() {
