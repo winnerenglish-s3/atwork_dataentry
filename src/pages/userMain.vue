@@ -138,10 +138,11 @@ export default {
 
       let userData = await axios.get(apiURL);
 
-
-      let getOnlyDataentryUser = userData.data.filter((x) =>
-        x.customClaims.accessProgram.includes("dataEntry")
-      );
+      let getOnlyDataentryUser = userData.data.filter((x) => {
+        if (x.customClaims) {
+          return x.customClaims.accessProgram.includes("dataEntry");
+        }
+      });
 
       this.dataUser = getOnlyDataentryUser;
       this.isLoadUser = true;
