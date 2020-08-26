@@ -445,11 +445,15 @@ export default {
             let getImage = "";
             let getChoiceSound = element.data().choices;
 
+            let genRandomCode = Math.random().toString(36).substring(2);
+
             if (element.data().isImage) {
-              getImage = this.pathFile + "image/" + element.id + ".jpg";
+              getImage =
+                this.pathFile + "image/" + element.id + ".jpg?" + genRandomCode;
             }
             if (element.data().isSound) {
-              getSound = this.pathFile + "audio/" + element.id + ".mp3";
+              getSound =
+                this.pathFile + "audio/" + element.id + ".mp3?" + genRandomCode;
             }
             if (element.data().isAnswerSound) {
               getChoiceSound.map(async (x, index) => {
@@ -460,7 +464,8 @@ export default {
                     element.id +
                     "-" +
                     (index + 1) +
-                    ".mp3";
+                    ".mp3?" +
+                    genRandomCode;
                 }
               });
             }

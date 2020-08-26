@@ -277,17 +277,22 @@ export default {
           dataDraft.forEach((element) => {
             let getImage = "";
             let getSound = "";
+
+            let genRandomCode = Math.random().toString(36).substring(2);
+
             if (element.data().isImage == true) {
               getImage =
                 " https://storage.googleapis.com/atwork-dee11.appspot.com/practice/image/" +
                 element.id +
-                ".jpg";
+                ".jpg?" +
+                genRandomCode;
             }
             if (element.data().isSound == true) {
               getSound =
                 "https://storage.googleapis.com/atwork-dee11.appspot.com/practice/audio/" +
                 element.id +
-                ".mp3";
+                ".mp3?" +
+                genRandomCode;
             }
             temp.push({
               ...element.data(),
@@ -308,17 +313,22 @@ export default {
               dataServer.forEach((element) => {
                 let getImage = "";
                 let getSound = "";
+
+                let genRandomCode = Math.random().toString(36).substring(2);
+
                 if (element.data().isImage == true) {
                   getImage =
                     " https://storage.googleapis.com/atwork-dee11.appspot.com/practice/image/" +
                     element.id +
-                    ".jpg";
+                    ".jpg?" +
+                    genRandomCode;
                 }
                 if (element.data().isSound == true) {
                   getSound =
                     "https://storage.googleapis.com/atwork-dee11.appspot.com/practice/audio/" +
                     element.id +
-                    ".mp3";
+                    ".mp3?" +
+                    genRandomCode;
                 }
                 temp.push({
                   ...element.data(),

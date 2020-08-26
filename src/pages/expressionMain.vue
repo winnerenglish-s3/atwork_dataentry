@@ -190,7 +190,7 @@
                 size="sm"
                 icon="fas fa-volume-up"
                 color="blue-grey-10"
-                @click="playAudio('https://storage.googleapis.com/atwork-dee11.appspot.com/practice/audio/' + item.id +'-' +(index2+1)+'.mp3')"
+                @click="playAudio('https://storage.googleapis.com/atwork-dee11.appspot.com/practice/audio/' + item.id +'-' +(index2+1)+'.mp3?' + item.genCodeCache)"
               ></q-btn>
             </div>
             <div
@@ -282,10 +282,13 @@ export default {
         .where("practiceId", "==", this.practiceId)
         .onSnapshot((dataDraft) => {
           let temp = [];
+          let genRandomCode = Math.random().toString(36).substring(2);
+
           dataDraft.forEach((element) => {
             temp.push({
               ...element.data(),
               collection: "draft",
+              genCodeCache: genRandomCode,
               id: element.id,
             });
           });
@@ -296,9 +299,12 @@ export default {
             .get()
             .then((dataServer) => {
               dataServer.forEach((element) => {
+                let genRandomCode = Math.random().toString(36).substring(2);
+
                 temp.push({
                   ...element.data(),
                   collection: "server",
+                  genCodeCache: genRandomCode,
                   id: element.id,
                 });
               });

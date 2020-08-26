@@ -425,8 +425,11 @@ export default {
           let getSound = "";
           let temp = [];
           doc.forEach((element) => {
+            let genRandomCode = Math.random().toString(36).substring(2);
+
             if (element.data().isSound) {
-              getSound = this.pathFile + "audio/" + element.id + ".mp3";
+              getSound =
+                this.pathFile + "audio/" + element.id + ".mp3?" + genRandomCode;
             }
             let dataKey = {
               key: element.id,
