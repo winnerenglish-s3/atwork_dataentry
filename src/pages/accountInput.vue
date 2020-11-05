@@ -79,6 +79,16 @@
       <div>
         <div>รหัสพนักงาน</div>
         <q-input
+          v-model.trim="dataEmployee.empId"
+          ref="empId"
+          outlined
+          dense
+          :rules="[value => !!value]"
+        ></q-input>
+      </div>
+      <div>
+        <div>รหัสผู้ใช้งาน</div>
+        <q-input
           v-model.trim="dataEmployee.username"
           ref="username"
           outlined
@@ -97,10 +107,6 @@
           lazy-rules
         ></q-input>
       </div>
-      <!-- <div v-else class="q-pb-md">
-        <div>รหัสผ่าน</div>
-        <q-input value="123456789" type="password" ref="password" outlined dense readonly></q-input>
-      </div>-->
       <div class="q-pb-md">
         <div>บทเรียนเริ่มต้น</div>
         <q-select
@@ -161,7 +167,8 @@ export default {
         startLevelId: "",
         star: 0,
         jobPosition: "",
-        startJobDate: ""
+        startJobDate: "",
+        empId: ""
       },
       usernameOld: "",
       departmentAll: "",
@@ -233,6 +240,7 @@ export default {
         // ADD MODE
         db.collection("employee")
           .add({
+            empId: this.dataEmployee.empId,
             password: this.dataEmployee.password,
             hotelId: this.$route.params.hotelId,
             departmentId: this.dataEmployee.departmentId,
