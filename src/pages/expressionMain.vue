@@ -49,8 +49,8 @@
       </div>
       <!-- หัวข้อ -->
       <div class="q-ma-lg text-h6" align="center">
-        <div>{{getLevelName}}</div>
-        <div>{{getUnitName}}</div>
+        <div>{{ getLevelName }}</div>
+        <div>{{ getUnitName }}</div>
       </div>
       <!-- ปุ่มเพิ่ม -->
       <div class align="center">
@@ -74,7 +74,7 @@
       <!-- การ์ดข้อความ -->
 
       <q-card
-        v-for="(item, index) in  showDataExpression"
+        v-for="(item, index) in showDataExpression"
         v-show="item.collection == expressionType"
         :key="index"
         class="q-mt-md bdt relative-position"
@@ -91,14 +91,17 @@
           @click="cancelDeleteExpression(item.id, item.order)"
           style="width:190px; z-index:2600; "
           class="absolute-center bg-white"
-        >ยกเลิกการลบ</q-btn>
+          >ยกเลิกการลบ</q-btn
+        >
         <q-card-section class="text-white bg-blue-grey-10 no-padding">
           <div class="row q-pa-sm">
             <div class="col">
               <div
                 v-if="item.status != 'waitForDelete' || $q.platform.is.desktop"
                 class="text-subtitle1"
-              >รหัสลำดับ {{item.order}}</div>
+              >
+                รหัสลำดับ {{ item.order }}
+              </div>
               <div
                 @click="cancelDeleteExpression(item.id, item.order)"
                 v-if="$q.platform.is.mobile && item.status == 'waitForDelete'"
@@ -111,7 +114,7 @@
             <div class="col self-center" align="right">
               <!-- icon-ถังขยะ -->
               <q-btn
-                @click="openDialogDelete(item.id,item.order)"
+                @click="openDialogDelete(item.id, item.order)"
                 v-if="expressionType == 'draft'"
                 class="cursor-pointer desktop-only q-mx-sm"
                 icon="far fa-trash-alt"
@@ -142,7 +145,12 @@
                 icon="fas fa-ellipsis-v"
               >
                 <!-- เมนูแก้ไข-ลบ -->
-                <q-menu anchor="top right" self="top right" :offset="[0,-37]" class="mobile-only">
+                <q-menu
+                  anchor="top right"
+                  self="top right"
+                  :offset="[0, -37]"
+                  class="mobile-only"
+                >
                   <q-list style="min-width:180px">
                     <q-item
                       clickable
@@ -156,7 +164,7 @@
                       clickable
                       v-close-popup
                       v-if="item.status != 'waitForDelete'"
-                      @click="openDialogDelete(item.id,item.order)"
+                      @click="openDialogDelete(item.id, item.order)"
                       class="cursor-pointer text-subtitle1"
                     >
                       <q-item-section>ลบประโยคสนทนา</q-item-section>
@@ -168,15 +176,23 @@
           </div>
         </q-card-section>
         <!-- ประโยคข้อความ -->
-        <div v-for="(item2, index2) in item.expression" :key="index2" class="no-padding">
+        <div
+          v-for="(item2, index2) in item.expression"
+          :key="index2"
+          class="no-padding"
+        >
           <div
             v-if="item2.speaker == 'employee'"
             class="q-px-md q-pt-md q-pb-sm text-subtitle1"
-          >พนักงาน:</div>
+          >
+            พนักงาน:
+          </div>
           <div
             v-if="item2.speaker == 'customer'"
             class="q-px-md q-pt-sm q-pb-none text-subtitle1"
-          >ลูกค้า:</div>
+          >
+            ลูกค้า:
+          </div>
           <div class="row items-center">
             <div
               class="col-1 self-start"
@@ -190,15 +206,31 @@
                 size="sm"
                 icon="fas fa-volume-up"
                 color="blue-grey-10"
-                @click="playAudio('https://storage.googleapis.com/atwork-dee11.appspot.com/practice/audio/' + item.id +'-' +(index2+1)+'.mp3?' + item.genCodeCache)"
+                @click="
+                  playAudio(
+                    'https://storage.googleapis.com/atwork-dee11.appspot.com/practice/audio/' +
+                      item.id +
+                      '-' +
+                      (index2 + 1) +
+                      '.mp3?' +
+                      item.genCodeCache
+                  )
+                "
               ></q-btn>
             </div>
             <div
               class="col"
-              :class="$q.platform.is.desktop && item2.isSound == true?'text-subtitle1':' q-pl-md  text-subtitle1'"
+              :class="
+                $q.platform.is.desktop && item2.isSound == true
+                  ? 'text-subtitle1'
+                  : ' q-pl-md  text-subtitle1'
+              "
             >
-              <div>{{item2.sentenceEng}}</div>
-              <div class="text-blue-grey-7 q-pb-sm">{{item2.sentenceTh}}</div>
+              <div v-html="item2.sentenceEng"></div>
+              <div
+                class="text-blue-grey-7 q-pb-sm"
+                v-html="item2.sentenceTh"
+              ></div>
             </div>
           </div>
           <q-separator />
@@ -209,7 +241,7 @@
     <dialog-setting
       :type="3"
       :practice="'ประโยคสนทนา'"
-      :name="'รหัสลำดับ '+ getOrder"
+      :name="'รหัสลำดับ ' + getOrder"
       v-if="dialogDelete == true"
       @emitCancelDelete="dialogDelete = false"
       @emitConfirmDelete="deleteExpression()"
@@ -230,7 +262,7 @@ import syncBtn from "../components/syncBtn.vue";
 export default {
   components: {
     dialogSetting,
-    syncBtn,
+    syncBtn
   },
   data() {
     return {
@@ -249,7 +281,7 @@ export default {
       practiceId: this.$route.params.practiceId,
       isSnap: "",
       isDisable: false,
-      playSoundURL: "",
+      playSoundURL: ""
     };
   },
   methods: {
@@ -263,7 +295,7 @@ export default {
       db.collection("level")
         .doc(this.levelId)
         .get()
-        .then((data) => {
+        .then(data => {
           this.getLevelName = data.data().name;
         });
     },
@@ -271,7 +303,7 @@ export default {
       db.collection("unit")
         .doc(this.unitId)
         .get()
-        .then((data) => {
+        .then(data => {
           this.getUnitName = data.data().name;
         });
     },
@@ -280,16 +312,18 @@ export default {
         .where("levelId", "==", this.levelId)
         .where("unitId", "==", this.unitId)
         .where("practiceId", "==", this.practiceId)
-        .onSnapshot((dataDraft) => {
+        .onSnapshot(dataDraft => {
           let temp = [];
-          let genRandomCode = Math.random().toString(36).substring(2);
+          let genRandomCode = Math.random()
+            .toString(36)
+            .substring(2);
 
-          dataDraft.forEach((element) => {
+          dataDraft.forEach(element => {
             temp.push({
               ...element.data(),
               collection: "draft",
               genCodeCache: genRandomCode,
-              id: element.id,
+              id: element.id
             });
           });
           db.collection("practice_server")
@@ -297,15 +331,17 @@ export default {
             .where("unitId", "==", this.unitId)
             .where("practiceId", "==", this.practiceId)
             .get()
-            .then((dataServer) => {
-              dataServer.forEach((element) => {
-                let genRandomCode = Math.random().toString(36).substring(2);
+            .then(dataServer => {
+              dataServer.forEach(element => {
+                let genRandomCode = Math.random()
+                  .toString(36)
+                  .substring(2);
 
                 temp.push({
                   ...element.data(),
                   collection: "server",
                   genCodeCache: genRandomCode,
-                  id: element.id,
+                  id: element.id
                 });
               });
               temp.sort((a, b) => {
@@ -354,8 +390,8 @@ export default {
           levelId: this.levelId,
           unitId: this.unitId,
           getLevelName: this.getLevelName,
-          getUnitName: this.getUnitName,
-        },
+          getUnitName: this.getUnitName
+        }
       });
     },
     addDataExpression() {
@@ -365,8 +401,8 @@ export default {
           getLevelName: this.getLevelName,
           getUnitName: this.getUnitName,
           levelId: this.levelId,
-          unitId: this.unitId,
-        },
+          unitId: this.unitId
+        }
       });
     },
     printMe() {
@@ -375,17 +411,17 @@ export default {
         params: {
           title1: this.getLevelName,
           title2: this.getUnitName,
-          data: this.showDataExpression,
-        },
+          data: this.showDataExpression
+        }
       });
-    },
+    }
   },
   mounted() {
     this.loadDataExpression();
     this.loadLevelData();
     this.loadUnitData();
     // var user = auth.currentUser;
-  },
+  }
 };
 </script>
 
