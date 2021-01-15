@@ -185,7 +185,13 @@
             v-if="item2.speaker == 'employee'"
             class="q-px-md q-pt-md q-pb-sm text-subtitle1"
           >
-            พนักงาน:
+            พนักงาน#1:
+          </div>
+          <div
+            v-if="item2.speaker == 'employee2'"
+            class="q-px-md q-pt-md q-pb-sm text-subtitle1"
+          >
+            พนักงาน#2:
           </div>
           <div
             v-if="item2.speaker == 'customer'"

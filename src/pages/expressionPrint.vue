@@ -40,30 +40,46 @@
             <tr style="height: 15px;" align="center">
               <td>
                 <div class="q-mb-md">
-                  <span class="text-h4">{{title1}}</span>
+                  <span class="text-h4">{{ title1 }}</span>
                   <br />
-                  <span class="text-h5">{{title2}}</span>
+                  <span class="text-h5">{{ title2 }}</span>
                 </div>
               </td>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(item,index) in data" :key="index">
+            <tr v-for="(item, index) in data" :key="index">
               <td>
                 <q-separator class="q-my-md" />
                 <div class="row">
-                  <div class="col-1" style="width:30px;">{{index+1}}.</div>
-                  <div class="col row" v-for="(val,index2) in item.expression" :key="index2">
-                    <div class="col">
-                      <div>
-                        <span v-html="val.speaker == 'employee' ? 'พนักงาน' : 'ลูกค้า'"></span>
-                      </div>
-                      <div class="q-mt-sm">
-                        <q-icon v-if="val.isSound" name="fas fa-volume-up" class="q-mr-sm"></q-icon>
-                        <span v-html="val.sentenceEng"></span>
-                      </div>
-                      <div>
-                        <span v-html="val.sentenceTh"></span>
+                  <div class="col-1" style="width:15px;">{{ index + 1 }}.</div>
+                  <div class="col row">
+                    <div
+                      class="col-12"
+                      v-for="(val, index2) in item.expression"
+                      :key="index2"
+                    >
+                      <div class="col q-px-md q-mb-md">
+                        <div>
+                          <span v-if="val.speaker == 'employee'"
+                            >พนักงาน#1</span
+                          >
+                          <span v-if="val.speaker == 'employee2'"
+                            >พนักงาน#2</span
+                          >
+                          <span v-if="val.speaker == 'customer'">ลูกค้า</span>
+                        </div>
+                        <div>
+                          <q-icon
+                            v-if="val.isSound"
+                            name="fas fa-volume-up"
+                            class="q-mr-sm"
+                          ></q-icon>
+                          <span v-html="val.sentenceEng"></span>
+                        </div>
+                        <div>
+                          <span v-html="val.sentenceTh"></span>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -83,7 +99,7 @@ export default {
     return {
       data: this.$route.params.data,
       title1: this.$route.params.title1,
-      title2: this.$route.params.title2,
+      title2: this.$route.params.title2
     };
   },
   methods: {
@@ -92,14 +108,14 @@ export default {
     },
     closeBtn() {
       window.history.back();
-    },
+    }
   },
   mounted() {
     if (this.$route.params.data == undefined) {
       window.history.back();
     }
-    this.data = this.data.filter((x) => x.collection == "draft");
-  },
+    this.data = this.data.filter(x => x.collection == "draft");
+  }
 };
 </script>
 

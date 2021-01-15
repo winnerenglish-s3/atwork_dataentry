@@ -5,14 +5,19 @@
         <div class="col-sm-12 col-xs-12 relative-position">
           <!-- หัวข้อ -->
           <div class="q-ma-lg text-h6" align="center">
-            <div>{{getLevelName}}</div>
-            <div>{{getUnitName}}</div>
+            <div>{{ getLevelName }}</div>
+            <div>{{ getUnitName }}</div>
           </div>
           <!-- รหัสลำดับ -->
           <div>
             <div class="row">
               <div class="text-subtitle1" align="left">รหัสลำดับ</div>
-              <div class="text-subtitle1 q-ml-md text-grey-7" style="margin-top:0.7px">ตัวเลข 3 หลัก</div>
+              <div
+                class="text-subtitle1 q-ml-md text-grey-7"
+                style="margin-top:0.7px"
+              >
+                ตัวเลข 3 หลัก
+              </div>
             </div>
             <q-input
               dense
@@ -29,24 +34,29 @@
           <div align="center">
             <q-btn
               @click="boxCount++"
-              v-if="boxCount+2 && boxCount < 3 "
+              v-if="boxCount + 2 && boxCount < 3"
               style="width:190px"
               class="bg-blue-grey-10"
               color="white"
-            >เพิ่มประโยคที่ {{boxCount+2}}</q-btn>
+              >เพิ่มประโยคที่ {{ boxCount + 2 }}</q-btn
+            >
           </div>
         </div>
       </div>
-      <div class="row" v-for="(i) in boxCount+1" :key="i">
+      <div class="row" v-for="i in boxCount + 1" :key="i">
         <div class="col-sm-12 col-xs-12 relative-position">
           <q-card class="q-mt-lg text-black">
-            <div class="row items-center justify-between bg-blue-grey-10 text-white q-pa-xs">
-              <div align="left" class="q-ml-sm text-subtitle1">ประโยคที่ {{i}}</div>
+            <div
+              class="row items-center justify-between bg-blue-grey-10 text-white q-pa-xs"
+            >
+              <div align="left" class="q-ml-sm text-subtitle1">
+                ประโยคที่ {{ i }}
+              </div>
               <!-- ถังขยะ -->
               <div align="right">
                 <q-btn
                   v-if="i != 1"
-                  @click="opendialogDeleteCard(i-1)"
+                  @click="opendialogDeleteCard(i - 1)"
                   flat
                   class="cursor-pointer"
                   size="sm"
@@ -65,7 +75,7 @@
                       dense
                       color="blue-grey-10"
                       class="col-6"
-                      v-model="sentence[i-1].speaker"
+                      v-model="sentence[i - 1].speaker"
                       val="customer"
                       label="ลูกค้า"
                     />
@@ -75,9 +85,19 @@
                       dense
                       color="blue-grey-10"
                       class="col-6"
-                      v-model="sentence[i-1].speaker"
+                      v-model="sentence[i - 1].speaker"
                       val="employee"
-                      label="พนักงาน"
+                      label="พนักงาน#1"
+                    />
+                  </div>
+                  <div class="col-md-3 col-xs-6">
+                    <q-radio
+                      dense
+                      color="blue-grey-10"
+                      class="col-6"
+                      v-model="sentence[i - 1].speaker"
+                      val="employee2"
+                      label="พนักงาน#2"
                     />
                   </div>
                 </div>
@@ -89,10 +109,10 @@
                   <div>
                     <q-input
                       dense
-                      :ref="'sentenceEng'+i"
-                      :error="sentence[i-1].errorEng"
+                      :ref="'sentenceEng' + i"
+                      :error="sentence[i - 1].errorEng"
                       outlined
-                      v-model="sentence[i-1].sentenceEng"
+                      v-model="sentence[i - 1].sentenceEng"
                       hide-bottom-space
                     />
                   </div>
@@ -102,10 +122,10 @@
                   <div>
                     <q-input
                       dense
-                      :error="sentence[i-1].errorTh"
-                      :ref="'sentenceTh'+i"
+                      :error="sentence[i - 1].errorTh"
+                      :ref="'sentenceTh' + i"
                       outlined
-                      v-model="sentence[i-1].sentenceTh"
+                      v-model="sentence[i - 1].sentenceTh"
                       hide-bottom-space
                     />
                   </div>
@@ -118,43 +138,51 @@
                       <div
                         class="q-ml-md text-blue-grey-7 text-body2"
                         style="margin-top:0.7%"
-                      >ไฟล์ mp3 เท่านั้น</div>
+                      >
+                        ไฟล์ mp3 เท่านั้น
+                      </div>
                     </div>
                     <div>
                       <q-file
                         accept=".mp3"
                         bg-color="white"
                         outlined
-                        v-model="sentence[i-1].uploadSound"
+                        v-model="sentence[i - 1].uploadSound"
                       >
                         <template v-slot:append>
                           <!-- ปุ่มเลือกไฟล์ -->
                           <div
                             style="width:100px;"
                             class="text-body2 rounded-borders text-center bg-blue-grey-10 text-white q-pa-xs cursor-pointer"
-                            @click.stop="sentence[i-1].uploadSound = null"
-                            v-if="!sentence[i-1].uploadSound"
-                          >เลือกไฟล์</div>
+                            @click.stop="sentence[i - 1].uploadSound = null"
+                            v-if="!sentence[i - 1].uploadSound"
+                          >
+                            เลือกไฟล์
+                          </div>
                           <!-- ปุ่มลบไฟล์ -->
                           <div
                             class="cursor-pointer rounded-borders text-white bg-blue-grey-10"
-                            v-if="sentence[i-1].uploadSound"
-                            @click="sentence[i-1].uploadSound = null"
+                            v-if="sentence[i - 1].uploadSound"
+                            @click="sentence[i - 1].uploadSound = null"
                           >
                             <span style class="far fa-trash-alt q-px-xs"></span>
                           </div>
                         </template>
                         <div
-                          v-if="sentence[i-1].isSound == true"
+                          v-if="sentence[i - 1].isSound == true"
                           style="width:1000px"
                           class="text-body2 text-grey-7 self-center"
-                        >{{sentence[i-1].uploadSound}}</div>
+                        >
+                          {{ sentence[i - 1].uploadSound }}
+                        </div>
                         <div
                           style="width:1000px"
                           class="text-body2 text-grey-7 self-center"
                           align="right"
-                          v-if="!sentence[i-1].uploadSound"
-                        >ลากแล้ววาง หรือ</div>
+                          v-if="!sentence[i - 1].uploadSound"
+                        >
+                          ลากแล้ววาง หรือ
+                        </div>
                       </q-file>
                     </div>
                   </div>
@@ -166,46 +194,63 @@
                       <div
                         class="q-ml-md text-blue-grey-7"
                         style="margin-top:0.7%"
-                      >ไฟล์ mp3 เท่านั้น</div>
+                      >
+                        ไฟล์ mp3 เท่านั้น
+                      </div>
                     </div>
                     <div>
                       <q-file
                         accept=".mp3"
                         bg-color="white"
                         outlined
-                        v-model="uploadSound[i-1].file"
+                        v-model="uploadSound[i - 1].file"
                       >
                         <template v-slot:append>
                           <!-- ปุ่มเลือกไฟล์ -->
                           <div
                             style="width:100px;"
                             class="text-body2 rounded-borders text-center bg-blue-grey-10 text-white q-pa-xs cursor-pointer"
-                            @click.stop="uploadSound[i-1].file = null"
-                            v-if="!sentence[i-1].isSound && uploadSound[i-1].file == null"
-                          >เลือกไฟล์</div>
+                            @click.stop="uploadSound[i - 1].file = null"
+                            v-if="
+                              !sentence[i - 1].isSound &&
+                                uploadSound[i - 1].file == null
+                            "
+                          >
+                            เลือกไฟล์
+                          </div>
                           <!-- ปุ่มลบไฟล์ -->
                           <div
                             class="cursor-pointer rounded-borders text-white bg-blue-grey-10"
-                            v-if="sentence[i-1].isSound || uploadSound[i-1].file "
-                            @click="sentence[i-1].isSound = false ,uploadSound[i-1].file = null "
+                            v-if="
+                              sentence[i - 1].isSound || uploadSound[i - 1].file
+                            "
+                            @click="
+                              (sentence[i - 1].isSound = false),
+                                (uploadSound[i - 1].file = null)
+                            "
                           >
                             <span style class="far fa-trash-alt q-px-xs"></span>
                           </div>
                         </template>
                         <div
-                          v-if="sentence[i-1].isSound"
+                          v-if="sentence[i - 1].isSound"
                           style="width:1000px"
                           class="text-body2 text-grey-7 self-center"
                           align="left"
                         >
-                          <span>{{$route.params.id +"-"+(i) + ".mp3"}}</span>
+                          <span>{{ $route.params.id + "-" + i + ".mp3" }}</span>
                         </div>
 
                         <div
                           style="width:1000px"
                           class="text-body2 text-grey-7 self-center"
-                          v-if="uploadSound[i-1].file == null && sentence[i-1].isSound == false"
-                        >ลากแล้ววาง หรือ</div>
+                          v-if="
+                            uploadSound[i - 1].file == null &&
+                              sentence[i - 1].isSound == false
+                          "
+                        >
+                          ลากแล้ววาง หรือ
+                        </div>
                       </q-file>
                     </div>
                   </div>
@@ -219,10 +264,10 @@
         <!-- ยกเลิก -->
         <div class="q-px-md">
           <q-btn
-            :to="'/expressionMain/'+ levelId+'/'+unitId+'/'+practiceId"
+            :to="'/expressionMain/' + levelId + '/' + unitId + '/' + practiceId"
             label="ยกเลิก"
             dense
-            :style="$q.platform.is.desktop?'width:150px':'width:120px'"
+            :style="$q.platform.is.desktop ? 'width:150px' : 'width:120px'"
             outline
             color="blue-grey-10"
           />
@@ -233,7 +278,7 @@
             @click="saveData()"
             label="บันทึก"
             dense
-            :style="$q.platform.is.desktop?'width:150px':'width:120px'"
+            :style="$q.platform.is.desktop ? 'width:150px' : 'width:120px'"
             color="white"
             class="bg-blue-grey-10"
           />
@@ -246,10 +291,18 @@
       <q-card style="min-width: 350px; height:200px">
         <q-card-section></q-card-section>
 
-        <q-card-section align="center" class="q-pt-md text-h6">คุณต้องการลบ "ประโยคที่ {{getIndex}}"</q-card-section>
+        <q-card-section align="center" class="q-pt-md text-h6"
+          >คุณต้องการลบ "ประโยคที่ {{ getIndex }}"</q-card-section
+        >
 
         <q-card-actions align="center" class="q-mt-md">
-          <q-btn style="width:120px" outline label="ยกเลิก" color="blue-grey-10" v-close-popup />
+          <q-btn
+            style="width:120px"
+            outline
+            label="ยกเลิก"
+            color="blue-grey-10"
+            v-close-popup
+          />
           <q-btn
             @click="confirmDeleteCard()"
             style="width:120px"
@@ -259,17 +312,17 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
-    <dialog-setting :type="4" v-if="isShowDailogDeleteFinish == true"></dialog-setting>
+    <dialog-setting
+      :type="4"
+      v-if="isShowDailogDeleteFinish == true"
+    ></dialog-setting>
     <dialog-setting
       :type="6"
-      @autoClose="$router.push(
-              '/expressionMain/' +
-                levelId +
-                '/' +
-                unitId +
-                '/' +
-                practiceId
-            )"
+      @autoClose="
+        $router.push(
+          '/expressionMain/' + levelId + '/' + unitId + '/' + practiceId
+        )
+      "
       v-if="isShowDialogSaveFinish == true"
     ></dialog-setting>
   </q-page>
@@ -610,5 +663,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>
