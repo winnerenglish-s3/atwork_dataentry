@@ -40,24 +40,24 @@
             <tr style="height: 15px;" align="center">
               <td>
                 <div class="q-mb-md">
-                  <span class="text-h4">{{title1}}</span>
+                  <span class="text-h4">{{ title1 }}</span>
                   <br />
-                  <span class="text-h5">{{title2}}</span>
+                  <span class="text-h5">{{ title2 }}</span>
                 </div>
               </td>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="(item,index) in data" :key="index">
+            <tr v-for="(item, index) in data" :key="index">
               <table style="width:100%">
                 <tr>
                   <td style="width:200px">
-                    <span class="text-h6">{{showSpeakerName(item.speaker)}}</span>
+                    <span class="text-h6">{{ item.speaker }}</span>
                   </td>
                   <td class="text-h6">
-                    <span>{{item.sentenceEng}}</span>
+                    <span>{{ item.sentenceEng }}</span>
                     <br />
-                    <span>{{item.sentenceTh}}</span>
+                    <span>{{ item.sentenceTh }}</span>
                   </td>
                 </tr>
                 <tr>
@@ -80,7 +80,7 @@ export default {
     return {
       data: this.$route.params.data,
       title1: this.$route.params.title1,
-      title2: this.$route.params.title2,
+      title2: this.$route.params.title2
     };
   },
   methods: {
@@ -101,13 +101,13 @@ export default {
     },
     closeBtn() {
       window.history.back();
-    },
+    }
   },
   mounted() {
     if (this.$route.params.data == undefined) {
       window.history.back();
     }
-  },
+  }
 };
 </script>
 

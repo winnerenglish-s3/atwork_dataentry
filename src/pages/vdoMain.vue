@@ -9,7 +9,7 @@
               <q-radio
                 color="blue-grey-10"
                 @input="loadPracticeData(false)"
-                v-model="mode "
+                v-model="mode"
                 val="draft"
                 label="แบบร่าง"
               />
@@ -19,7 +19,7 @@
               <q-radio
                 color="blue-grey-10"
                 @input="loadPracticeData(true)"
-                v-model="mode "
+                v-model="mode"
                 val="server"
                 label="เซิร์ฟเวอร์"
               />
@@ -28,7 +28,7 @@
         </div>
         <div>
           <div class="q-ml-md" v-if="$q.platform.is.mobile">
-            <sync-btn :practiceId="practiceId " :isServer="isDisable"></sync-btn>
+            <sync-btn :practiceId="practiceId" :isServer="isDisable"></sync-btn>
           </div>
           <div class="row desktop-only" v-if="mode == 'draft'">
             <div class="q-mx-md">
@@ -48,15 +48,15 @@
         </div>
       </div>
       <div class="text-h6 text-center q-pt-md">
-        <div>{{practiceData.levelName}}</div>
-        <div>{{ practiceData.unitOrder + ". " + practiceData.unitName}}</div>
+        <div>{{ practiceData.levelName }}</div>
+        <div>{{ practiceData.unitOrder + ". " + practiceData.unitName }}</div>
       </div>
       <div class="q-my-md boxCard text-left">
         <div class="bg-blue-grey-10 text-white boxVdo row q-px-xs">
           <div class="col self-center q-px-sm">วิดีโอสนทนา</div>
           <div class="col self-center q-px-xs" align="right">
             <q-btn
-              v-if="mode  == 'draft'"
+              v-if="mode == 'draft'"
               @click="editBtn()"
               size="sm"
               icon="far fa-edit"
@@ -87,24 +87,32 @@
             <div class="q-my-md">
               <q-video
                 style="max-width:500px;height:278px"
-                :src="'https://www.youtube.com/embed/'+ linkVdo"
+                :src="'https://www.youtube.com/embed/' + linkVdo"
               />
             </div>
           </div>
           <div class="text-subtitle1">ลิงก์วิดีโอ</div>
           <div class="relative-position">
-            <div class="absolute-center">{{fileVdo}}</div>
+            <div class="absolute-center">{{ fileVdo }}</div>
             <q-input outlined dense readonly />
           </div>
           <div class="text-center q-py-md">
             <u
-              @click="$q.platform.is.desktop ?  isShowUpload = true : $router.push('/vdohowtoupload/' +  $route.params.levelId +
-                  '/' +
-                  $route.params.unitId +
-                  '/' +
-                  $route.params.practiceId) "
+              @click="
+                $q.platform.is.desktop
+                  ? (isShowUpload = true)
+                  : $router.push(
+                      '/vdohowtoupload/' +
+                        $route.params.levelId +
+                        '/' +
+                        $route.params.unitId +
+                        '/' +
+                        $route.params.practiceId
+                    )
+              "
               class="text-blue-grey-10 text-center text-body2 cursor-pointer underline"
-            >ขั้นตอนการตั้งค่าอัพโหลดไฟล์บน Youtube</u>
+              >ขั้นตอนการตั้งค่าอัพโหลดไฟล์บน Youtube</u
+            >
           </div>
         </div>
       </div>
@@ -112,7 +120,7 @@
       <div class="q-pt-md">
         <div class="text-center">
           <q-btn
-            :disable="mode !='draft'"
+            :disable="mode != 'draft'"
             @click="addBtn()"
             style="max-width:190px;width:100%"
             class="bg-blue-grey-10 text-white text-subtitle1"
@@ -121,7 +129,7 @@
         </div>
         <div class="text-center">
           <div
-            v-for="item,index in practiceDataList"
+            v-for="(item, index) in practiceDataList"
             :key="index"
             class="q-my-md boxCard text-left relative-position"
           >
@@ -134,30 +142,33 @@
                 class="text-white cursor-pointer"
                 @click="cancelDelete(item.key)"
                 style="text-decoration:underline;"
-              >ยกเลิกการลบ</a>
+                >ยกเลิกการลบ</a
+              >
             </div>
             <q-btn
               dense
               style="z-index:30;width:190px;"
               class="absolute-center q-pa-sm text-blue-grey-10 desktop-only"
-              v-if="item.status  == 'waitForDelete'"
+              v-if="item.status == 'waitForDelete'"
               color="white"
               label="ยกเลิกการลบ"
               @click="cancelDelete(item.key)"
             ></q-btn>
-            <div v-if="item.status  == 'waitForDelete'" class="absolute-center backDrop"></div>
+            <div
+              v-if="item.status == 'waitForDelete'"
+              class="absolute-center backDrop"
+            ></div>
             <div class="boxVdo bg-blue-grey-10 text-white q-py-xs q-px-xs row">
               <div class="col self-center q-px-sm">
                 <span class="desktop-only">รหัสลำดับ {{ item.order }}</span>
-                <span
-                  class="mobile-only"
-                  v-if="item.status != 'waitForDelete'"
-                >รหัสลำดับ {{ item.order }}</span>
+                <span class="mobile-only" v-if="item.status != 'waitForDelete'"
+                  >รหัสลำดับ {{ item.order }}</span
+                >
               </div>
               <div class="col self-center desktop-only" align="right">
                 <q-btn
                   v-if="mode == 'draft'"
-                  @click="deleteBtn(item.key,item.order)"
+                  @click="deleteBtn(item.key, item.order)"
                   size="sm"
                   class="q-mr-sm"
                   round
@@ -175,27 +186,31 @@
               </div>
               <q-btn
                 class="mobile-only"
-                v-if="mode== 'draft'"
+                v-if="mode == 'draft'"
                 size="13px"
                 icon="fas fa-ellipsis-v"
                 round
                 dense
                 flat
               >
-                <q-menu anchor="top right" self="top right" :offset="[7,-37]">
+                <q-menu anchor="top right" self="top right" :offset="[7, -37]">
                   <q-list style="min-width: 120px">
                     <q-item clickable v-close-popup>
-                      <q-item-section @click="editBtn(item.key)">แก้ไขคำถาม</q-item-section>
+                      <q-item-section @click="editBtn(item.key)"
+                        >แก้ไขคำถาม</q-item-section
+                      >
                     </q-item>
                     <q-item clickable v-close-popup>
-                      <q-item-section @click="deleteBtn(item.key,item.order)">ลบคำถาม</q-item-section>
+                      <q-item-section @click="deleteBtn(item.key, item.order)"
+                        >ลบคำถาม</q-item-section
+                      >
                     </q-item>
                   </q-list>
                 </q-menu>
               </q-btn>
             </div>
             <div class="q-px-md q-py-sm">
-              <div class="self-center">{{showSpeakerName(item.speaker)}}</div>
+              <div class="self-center">{{ item.speaker }}</div>
               <div class="row">
                 <div>
                   <q-btn
@@ -209,8 +224,10 @@
                   />
                 </div>
                 <div class="col self-center">
-                  <span class="text-subtitle1">{{item.sentenceEng}}</span>
-                  <div class="text-blue-grey-7 text-subtitle2">{{item.sentenceTh}}</div>
+                  <span class="text-subtitle1">{{ item.sentenceEng }}</span>
+                  <div class="text-blue-grey-7 text-subtitle2">
+                    {{ item.sentenceTh }}
+                  </div>
                 </div>
               </div>
             </div>
@@ -230,12 +247,15 @@
                   v-model="dataVdo.linkVdo"
                   dense
                   ref="link"
-                  :rules="[ val => !!val ]"
+                  :rules="[val => !!val]"
                 />
               </div>
             </div>
             <div align="center" class="q-px-md">
-              <div class="row reverse-wrap justify-center" style="max-width:300px;width:100%">
+              <div
+                class="row reverse-wrap justify-center"
+                style="max-width:300px;width:100%"
+              >
                 <div class="col-6 q-py-sm text-center">
                   <q-btn
                     dense
@@ -266,7 +286,9 @@
       <q-dialog v-model="isShowUpload">
         <q-card style="max-width:610px;width:100%">
           <div>
-            <div class="text-h6 q-px-lg q-py-md">การตั้งค่าการอัปโหลดวิดีโอ</div>
+            <div class="text-h6 q-px-lg q-py-md">
+              การตั้งค่าการอัปโหลดวิดีโอ
+            </div>
           </div>
           <howtouploadfile />
           <div class="text-center">
@@ -313,7 +335,7 @@ export default {
   components: {
     howtouploadfile,
     dialogSetting,
-    syncBtn,
+    syncBtn
   },
   data() {
     return {
@@ -338,12 +360,12 @@ export default {
       practiceData: {
         levelName: "",
         unitName: "",
-        unitOrder: "",
+        unitOrder: ""
       },
       practiceDataList: [],
       dataVdo: {
         isVdo: false,
-        linkVdo: "",
+        linkVdo: ""
       },
       idVdo: "",
       playSoundURL: "",
@@ -351,6 +373,8 @@ export default {
         "https://storage.googleapis.com/atwork-dee11.appspot.com/practice/",
       syncData: "",
       isDisable: false,
+
+      speakerOptions: []
     };
   },
   methods: {
@@ -371,8 +395,8 @@ export default {
         params: {
           title1: this.practiceData.levelName,
           title2: this.practiceData.unitName,
-          data: this.practiceDataList,
-        },
+          data: this.practiceDataList
+        }
       });
     },
     loadLevel() {
@@ -381,7 +405,7 @@ export default {
       db.collection("level")
         .doc(levelKey)
         .get()
-        .then((result) => {
+        .then(result => {
           if (result.exists) {
             this.practiceData.levelName = result.data().name;
             // โหลดข้อมูล Unit
@@ -394,7 +418,7 @@ export default {
       db.collection("unit")
         .doc(unitKey)
         .get()
-        .then((result) => {
+        .then(result => {
           if (result.exists) {
             this.practiceData.unitName = result.data().name;
             this.practiceData.unitOrder = result.data().order;
@@ -421,11 +445,13 @@ export default {
 
       this.syncData = dbData
         .where("practiceId", "==", practiceId)
-        .onSnapshot((doc) => {
+        .onSnapshot(doc => {
           let getSound = "";
           let temp = [];
-          doc.forEach((element) => {
-            let genRandomCode = Math.random().toString(36).substring(2);
+          doc.forEach(element => {
+            let genRandomCode = Math.random()
+              .toString(36)
+              .substring(2);
 
             if (element.data().isSound) {
               getSound =
@@ -433,11 +459,19 @@ export default {
             }
             let dataKey = {
               key: element.id,
-              soundURL: getSound,
+              soundURL: getSound
             };
+
+            console.log(element.data());
+
+            let speakerName = this.speakerOptions.filter(
+              x => x.nameEng == element.data().speaker
+            )[0].nameTh;
+
             let final = {
               ...dataKey,
               ...element.data(),
+              speaker: speakerName
             };
             temp.push(final);
           });
@@ -453,7 +487,7 @@ export default {
       db.collection("practice_list")
         .doc(practiceId)
         .get()
-        .then((doc) => {
+        .then(doc => {
           if (doc.data().linkVdo) {
             this.idVdo = doc.id;
             this.dataVdo.isVdo = doc.data().isVdo;
@@ -489,8 +523,8 @@ export default {
         this.$router.push({
           name: "vdoEdit",
           params: {
-            id: key,
-          },
+            id: key
+          }
         });
       } else {
         this.dataVdo.linkVdo = "";
@@ -521,7 +555,9 @@ export default {
           .doc(this.$route.params.practiceId)
           .update(this.dataVdo);
       } else {
-        db.collection("practice_list").doc(this.idVdo).update(this.dataVdo);
+        db.collection("practice_list")
+          .doc(this.idVdo)
+          .update(this.dataVdo);
       }
       this.isSaveVdoDialogSuccess = true;
       this.editVdoDialog = false;
@@ -540,9 +576,11 @@ export default {
         this.$route.params.practiceId,
         this.$route.params.unitId
       );
-      db.collection("practice_draft").doc(this.isDeleteKey).update({
-        status: "waitForDelete",
-      });
+      db.collection("practice_draft")
+        .doc(this.isDeleteKey)
+        .update({
+          status: "waitForDelete"
+        });
       this.isDeleteDialogSuccess = true;
     },
     // ยกเลิกการลบข้อมูล
@@ -551,19 +589,35 @@ export default {
         this.$route.params.practiceId,
         this.$route.params.unitId
       );
-      db.collection("practice_draft").doc(key).update({
-        status: "notSync",
-      });
+      db.collection("practice_draft")
+        .doc(key)
+        .update({
+          status: "notSync"
+        });
     },
+    loadSpeaker() {
+      db.collection("speaker")
+        .get()
+        .then(doc => {
+          let temp = [];
+          doc.forEach(res => {
+            temp.push(res.data());
+          });
+
+          this.speakerOptions = temp;
+
+          this.loadLevel();
+        });
+    }
   },
   mounted() {
-    this.loadLevel();
+    this.loadSpeaker();
   },
   beforeDestroy() {
     if (typeof this.syncData == "function") {
       this.syncData();
     }
-  },
+  }
 };
 </script>
 

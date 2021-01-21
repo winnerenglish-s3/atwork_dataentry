@@ -71,6 +71,7 @@
               <div class="row">
                 <div align="left" class="col-6">
                   <q-select
+                    bg-color="white"
                     map-options=""
                     emit-value=""
                     :options="speakerOptions"

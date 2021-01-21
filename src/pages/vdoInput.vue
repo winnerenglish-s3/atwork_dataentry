@@ -2,8 +2,8 @@
   <q-page>
     <div class="container">
       <div class="text-h6 text-center">
-        <div>{{practiceData.levelName}}</div>
-        <div>{{ practiceData.unitOrder + ". " + practiceData.unitName}}</div>
+        <div>{{ practiceData.levelName }}</div>
+        <div>{{ practiceData.unitOrder + ". " + practiceData.unitName }}</div>
       </div>
       <div class="q-pt-sm">
         <span>รหัสลำดับ</span>
@@ -23,42 +23,16 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-xs-6 col-md-3 col-sm-3 q-pb-md">
-          <q-radio
-            style="margin:-10px"
-            color="blue-grey-10"
+        <div class="col-6 q-pb-md">
+          <q-select
+            emit-value=""
+            map-options=""
+            outlined=""
+            dense=""
+            bg-color="white"
+            :options="speakerOptions"
             v-model="vdoObject.speaker"
-            :val="'customer'"
-            label="ลูกค้า"
-          />
-        </div>
-
-        <div class="col-xs-6 col-md-3 col-sm-3 q-pb-md">
-          <q-radio
-            style="margin:-10px"
-            color="blue-grey-10"
-            v-model="vdoObject.speaker"
-            :val="'employee'"
-            label="พนักงาน#1"
-          />
-        </div>
-        <div class="col-xs-6 col-md-3 col-sm-3 q-pb-md">
-          <q-radio
-            style="margin:-10px"
-            color="blue-grey-10"
-            v-model="vdoObject.speaker"
-            :val="'employee2'"
-            label="พนักงาน#2"
-          />
-        </div>
-        <div class="col-xs-6 col-md-3 col-sm-3 q-pb-md">
-          <q-radio
-            style="margin:-10px"
-            color="blue-grey-10"
-            v-model="vdoObject.speaker"
-            :val="'people'"
-            label="คนทั่วไป"
-          />
+          ></q-select>
         </div>
       </div>
       <div>
@@ -72,7 +46,7 @@
             v-model="sentenceEng"
             dense
             type="text"
-            :rules="[ val => !!val]"
+            :rules="[val => !!val]"
           />
         </div>
       </div>
@@ -87,7 +61,7 @@
             v-model.trim="sentenceTh"
             dense
             type="text"
-            :rules="[ val => !!val ]"
+            :rules="[val => !!val]"
           />
         </div>
       </div>
@@ -96,19 +70,34 @@
           ไฟล์เสียง
           <span class="q-mx-md text-grey-5">ไฟล์ mp3 เท่านั้น</span>
         </div>
-        <q-file accept="audio/*" bg-color="white" outlined v-model="uploadAudio">
+        <q-file
+          accept="audio/*"
+          bg-color="white"
+          outlined
+          v-model="uploadAudio"
+        >
           <template class="relative-position" v-slot:append>
             <div
               style="width:100px"
               class="text-subtitle1 rounded-borders text-center bg-blue-grey-10 text-white q-pa-xs cursor-pointer"
               @click.stop="uploadAudio = null"
               v-if="!uploadAudio && !isKeyAudio"
-            >เลือกไฟล์</div>
-            <div v-if="uploadAudio || isKeyAudio" class="text-body1 absolute-center">{{isKeyAudio}}</div>
+            >
+              เลือกไฟล์
+            </div>
+            <div
+              v-if="uploadAudio || isKeyAudio"
+              class="text-body1 absolute-center"
+            >
+              {{ isKeyAudio }}
+            </div>
             <div
               class="cursor-pointer rounded-borders text-white bg-blue-grey-10"
               v-if="uploadAudio || isKeyAudio"
-              @click="uploadAudio  = null ; isKeyAudio = ''"
+              @click="
+                uploadAudio = null;
+                isKeyAudio = '';
+              "
             >
               <span class="far fa-trash-alt q-px-xs"></span>
             </div>
@@ -123,7 +112,10 @@
         </q-file>
       </div>
       <div align="center">
-        <div class="row reverse-wrap justify-center q-pt-md" style="max-width:340px;width:100%">
+        <div
+          class="row reverse-wrap justify-center q-pt-md"
+          style="max-width:340px;width:100%"
+        >
           <div class="col-6 q-py-sm text-left">
             <q-btn
               v-close-popup
@@ -148,7 +140,11 @@
           </div>
         </div>
       </div>
-      <dialog-setting :type="6" v-if="isSaveDialogSuccess" @autoClose="isSaveDialogSuccess = false"></dialog-setting>
+      <dialog-setting
+        :type="6"
+        v-if="isSaveDialogSuccess"
+        @autoClose="isSaveDialogSuccess = false"
+      ></dialog-setting>
     </div>
   </q-page>
 </template>
@@ -186,7 +182,9 @@ export default {
       isErrorOrder: false,
       orderMessage: "",
       orderOld: "",
-      isSaveDialogSuccess: false
+      isSaveDialogSuccess: false,
+
+      speakerOptions: []
     };
   },
   methods: {
@@ -333,10 +331,30 @@ export default {
           "/" +
           this.vdoObject.practiceId
       );
+    },
+    loadSpeaker() {
+      db.collection("speaker")
+        .get()
+        .then(doc => {
+          let temp = [];
+          doc.forEach(res => {
+            let newData = {
+              value: res.id,
+              label: res.data().nameTh
+            };
+
+            temp.push(newData);
+          });
+
+          this.speakerOptions = temp;
+          this.vdoObject.speaker = temp[0].value;
+
+          this.loadLevel();
+        });
     }
   },
   mounted() {
-    this.loadLevel();
+    this.loadSpeaker();
     if (this.$route.name == "vdoEdit") {
       if (this.$route.params.id == undefined) {
         this.$router.go(-1);
@@ -348,5 +366,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>
