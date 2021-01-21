@@ -181,24 +181,12 @@
           :key="index2"
           class="no-padding"
         >
-          <div
-            v-if="item2.speaker == 'employee'"
-            class="q-px-md q-pt-md q-pb-sm text-subtitle1"
-          >
-            พนักงาน#1:
+          <div class="q-px-md q-pt-md q-pb-sm text-subtitle1">
+            {{
+              speakerOptions.filter(x => x.nameEng == item2.speaker)[0].nameTh
+            }}
           </div>
-          <div
-            v-if="item2.speaker == 'employee2'"
-            class="q-px-md q-pt-md q-pb-sm text-subtitle1"
-          >
-            พนักงาน#2:
-          </div>
-          <div
-            v-if="item2.speaker == 'customer'"
-            class="q-px-md q-pt-sm q-pb-none text-subtitle1"
-          >
-            ลูกค้า:
-          </div>
+
           <div class="row items-center">
             <div
               class="col-1 self-start"
@@ -287,7 +275,8 @@ export default {
       practiceId: this.$route.params.practiceId,
       isSnap: "",
       isDisable: false,
-      playSoundURL: ""
+      playSoundURL: "",
+      speakerOptions: []
     };
   },
   methods: {
@@ -417,15 +406,30 @@ export default {
         params: {
           title1: this.getLevelName,
           title2: this.getUnitName,
-          data: this.showDataExpression
+          data: this.showDataExpression,
+          speaker: this.speakerOptions
         }
       });
+    },
+    loadSpeaker() {
+      db.collection("speaker")
+        .get()
+        .then(doc => {
+          let temp = [];
+          doc.forEach(res => {
+            temp.push(res.data());
+          });
+
+          this.loadDataExpression();
+
+          this.speakerOptions = temp;
+        });
     }
   },
   mounted() {
-    this.loadDataExpression();
     this.loadLevelData();
     this.loadUnitData();
+    this.loadSpeaker();
     // var user = auth.currentUser;
   }
 };

@@ -61,13 +61,10 @@
                     >
                       <div class="col q-px-md q-mb-md">
                         <div>
-                          <span v-if="val.speaker == 'employee'"
-                            >พนักงาน#1</span
-                          >
-                          <span v-if="val.speaker == 'employee2'"
-                            >พนักงาน#2</span
-                          >
-                          <span v-if="val.speaker == 'customer'">ลูกค้า</span>
+                          <span v-if="speakerList.length">{{
+                            speakerList.filter(x => x.nameEng == val.speaker)[0]
+                              .nameTh
+                          }}</span>
                         </div>
                         <div>
                           <q-icon
@@ -99,7 +96,8 @@ export default {
     return {
       data: this.$route.params.data,
       title1: this.$route.params.title1,
-      title2: this.$route.params.title2
+      title2: this.$route.params.title2,
+      speakerList: this.$route.params.speaker
     };
   },
   methods: {

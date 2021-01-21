@@ -65,41 +65,19 @@
                 />
               </div>
             </div>
-            <!-- radio button -->
 
+            <!-- Speaker  -->
             <div class="q-pa-md">
-              <div>
-                <div align="left" class="row">
-                  <div class="col-md-3 col-xs-6">
-                    <q-radio
-                      dense
-                      color="blue-grey-10"
-                      class="col-6"
-                      v-model="sentence[i - 1].speaker"
-                      val="customer"
-                      label="ลูกค้า"
-                    />
-                  </div>
-                  <div class="col-md-3 col-xs-6">
-                    <q-radio
-                      dense
-                      color="blue-grey-10"
-                      class="col-6"
-                      v-model="sentence[i - 1].speaker"
-                      val="employee"
-                      label="พนักงาน#1"
-                    />
-                  </div>
-                  <div class="col-md-3 col-xs-6">
-                    <q-radio
-                      dense
-                      color="blue-grey-10"
-                      class="col-6"
-                      v-model="sentence[i - 1].speaker"
-                      val="employee2"
-                      label="พนักงาน#2"
-                    />
-                  </div>
+              <div class="row">
+                <div align="left" class="col-6">
+                  <q-select
+                    map-options=""
+                    emit-value=""
+                    :options="speakerOptions"
+                    v-model="sentence[i - 1].speaker"
+                    outlined=""
+                    dense=""
+                  ></q-select>
                 </div>
               </div>
 
@@ -355,6 +333,8 @@ export default {
       isOrderError: false,
       errorSentenceEng1: false,
       errorOrderMes: "",
+
+      speakerOptions: [],
 
       uploadSound: [
         {
@@ -653,12 +633,31 @@ export default {
       this.dialogdeleteCard = false;
       this.isShowDailogDeleteFinish = true;
       this.moveData();
+    },
+    loadSpeaker() {
+      db.collection("speaker")
+        .get()
+        .then(doc => {
+          let temp = [];
+          doc.forEach(res => {
+            let newData = {
+              value: res.id,
+              label: res.data().nameTh
+            };
+
+            temp.push(newData);
+          });
+
+          this.speakerOptions = temp;
+        });
     }
   },
   mounted() {
     if (this.$route.name == "expressionEdit") {
       this.editMode();
     }
+
+    this.loadSpeaker();
   }
 };
 </script>
