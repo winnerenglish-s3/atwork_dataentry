@@ -462,8 +462,6 @@ export default {
               soundURL: getSound
             };
 
-            console.log(element.data());
-
             let speakerName = this.speakerOptions.filter(
               x => x.nameEng == element.data().speaker
             )[0].nameTh;
