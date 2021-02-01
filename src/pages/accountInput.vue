@@ -255,7 +255,7 @@ export default {
                 ? "0" + this.selectedDay
                 : this.selectedDay) +
               "/" +
-              (month + 1 < 10 ? "0" + month + 1 : month + 1) +
+              (month + 1 < 10 ? "0" + (month + 1) : (month + 1)) +
               "/" +
               this.selectedYear
           })
