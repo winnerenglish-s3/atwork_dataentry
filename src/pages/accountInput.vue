@@ -1,8 +1,5 @@
 <template>
   <q-page>
-    <div align="right">
-      อัพโหลดไพล์ Excel
-    </div>
     <div class="container">
       <div class="q-pb-lg">
         <div>ชื่อแผนก</div>
@@ -255,7 +252,7 @@ export default {
                 ? "0" + this.selectedDay
                 : this.selectedDay) +
               "/" +
-              (month + 1 < 10 ? "0" + (month + 1) : (month + 1)) +
+              (month + 1 < 10 ? "0" + (month + 1) : month + 1) +
               "/" +
               this.selectedYear
           })
@@ -360,33 +357,24 @@ export default {
         .doc(this.$route.params.employeeId)
         .get()
         .then(doc => {
+          let docData = doc.data();
+          this.dataEmployee = docData;
 
-          this.dataEmployee = doc.data();
+          this.usernameOld = docData.username;
 
-          this.usernameOld = doc.data().username;
+          if (!docData.startJobDate) {
+            docData.startJobDate = "01/01/2021";
+          }
 
-
-
-
-
-
-
-          let userdate = doc.data().startJobDate.split("/");
-
+          let userdate = docData.startJobDate.split("/");
           let date = new Date();
           let month = date.getMonth();
           let year = date.getFullYear();
           let days = this.getDaysInMonth(month + 1, year);
-
-          this.selectedDay = userdate[0]
-
-
-
-
+          this.selectedDay = userdate[0];
           this.selectedMonth = this.monthOptions[userdate[1] - 1];
-
           this.selectedYear = userdate[2];
-
+          this.yearOptions.push(year - 1);
           for (let i = 0; i < 3; i++) {
             this.yearOptions.push(year + i);
           }
@@ -419,7 +407,6 @@ export default {
     this.loadDepartment();
     this.loadLevel();
     if (this.$route.name == "accountEdit") {
-      // console.log("555");
       this.loadEdit();
       return;
     } else {
@@ -431,6 +418,7 @@ export default {
       this.selectedMonth = this.monthOptions[month];
       this.selectedYear = year;
 
+      this.yearOptions.push(year - 1);
       for (let i = 0; i < 3; i++) {
         this.yearOptions.push(year + i);
       }
