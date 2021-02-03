@@ -222,7 +222,7 @@
       <!-- dialog ลบ กรณีมีข้อมูล -->
       <dialog-center
         :type="5"
-        :practice="'แผนกภายในกิจการ'"
+        :practice="'พนักงานภายในแผนก'"
         :name="dataDepartment.name"
         v-if="isShowNoDeleteDialog"
         @emitConfirmDelete="isShowNoDeleteDialog = false"
@@ -448,6 +448,7 @@ export default {
       );
     },
     deleteDepartment(data) {
+      console.log("delete");
       this.dataDepartment = data;
       db.collection("employee")
         .where("departmentId", "==", data.departmentId)

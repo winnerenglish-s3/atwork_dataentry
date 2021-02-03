@@ -299,73 +299,6 @@ export default {
             this.isAddDialogSucess = true;
           });
       }
-
-      // return;
-
-      // let apiURL =
-      //   "https://us-central1-atwork-dee11.cloudfunctions.net/atworkFunctions/user/create";
-
-      // if (this.$route.name != "accountEdit") {
-      //   let postData = {
-      //     email: this.dataEmployee.email,
-      //     password: this.dataEmployee.password,
-      //     displayName: this.dataEmployee.name,
-      //     accessProgram: ["FrontEnd"],
-      //     dataEntryPermissions: [],
-      //   };
-      //   let userRecord = await axios.post(apiURL, postData);
-      //   if (userRecord.data.code) {
-      //     if (userRecord.data.code == "auth/email-already-exists") {
-      //       this.$q.notify({
-      //         message: "มีอีเมลนี้ในระบบแล้ว",
-      //         color: "red",
-      //       });
-      //     } else {
-      //       this.$q.notify({
-      //         message: "กรุณาตรวจสอบข้อมูลใหม่อีกครั้ง",
-      //         color: "red",
-      //       });
-      //     }
-      //     this.loadingHide();
-      //     return;
-      //   }
-
-      //   let uid = userRecord.data.uid;
-      //   db.collection("employee")
-      //     .add({
-      //       uid: uid,
-      //       hotelId: this.$route.params.hotelId,
-      //       departmentId: this.dataEmployee.departmentId,
-      //       name: this.dataEmployee.name,
-      //       email: this.dataEmployee.email,
-      //       startLevelId: this.dataEmployee.startLevelId,
-      //       tel: this.dataEmployee.tel,
-      //       star: 0,
-      //     })
-      //     .then(() => {
-      //       this.loadingHide();
-      //       this.isAddDialogSucess = true;
-      //     });
-      // } else {
-      //   let apiURL =
-      //     "https://us-central1-atwork-dee11.cloudfunctions.net/atworkFunctions/user/update";
-      //   let postData = {
-      //     displayName: this.dataEmployee.name,
-      //     password: this.dataEmployee.password,
-      //     uid: this.dataEmployee.uid,
-      //     accessProgram: ["FrontEnd"],
-      //   };
-      //   let axiosData = await axios.post(apiURL, postData);
-      //   let updateData = { ...this.dataEmployee };
-      //   delete updateData.password;
-      //   db.collection("employee")
-      //     .doc(this.$route.params.employeeId)
-      //     .update(updateData)
-      //     .then(() => {
-      //       this.loadingHide();
-      //       this.isAddDialogSucess = true;
-      //     });
-      // }
     },
     cancelAddEmployee() {
       this.$router.push("/accountMain");
@@ -427,8 +360,16 @@ export default {
         .doc(this.$route.params.employeeId)
         .get()
         .then(doc => {
+
           this.dataEmployee = doc.data();
+
           this.usernameOld = doc.data().username;
+
+
+
+
+
+
 
           let userdate = doc.data().startJobDate.split("/");
 
@@ -436,6 +377,11 @@ export default {
           let month = date.getMonth();
           let year = date.getFullYear();
           let days = this.getDaysInMonth(month + 1, year);
+
+          this.selectedDay = userdate[0]
+
+
+
 
           this.selectedMonth = this.monthOptions[userdate[1] - 1];
 
@@ -454,7 +400,6 @@ export default {
       this.$router.push("/accountMain");
     },
     getDaysInMonth(month, year) {
-      console.log(new Date(year, month, 0).getDate());
       return new Date(year, month, 0).getDate();
     },
     changeMonth() {
