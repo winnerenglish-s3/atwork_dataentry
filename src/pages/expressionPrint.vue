@@ -5,6 +5,18 @@
         <q-toolbar-title>
           <span>Expression</span>
         </q-toolbar-title>
+
+        <q-btn
+          dark
+          round
+          size="12px"
+          color="amber-13"
+          text-color="black"
+          icon="fas fa-copy"
+          class="q-mr-md"
+          @click="copyText()"
+        />
+
         <q-btn
           class="q-mr-md"
           dark
@@ -86,6 +98,18 @@
           </tbody>
         </table>
       </div>
+
+      <!-- <div class="paper-a4">
+        <div v-for="(item, index) in data">
+          <div
+            v-for="(item2, index2) in item.expression"
+            align="left"
+            class="q-py-md q-px-lg"
+          >
+            {{ item2.sentenceEng }}
+          </div>
+        </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -106,6 +130,27 @@ export default {
     },
     closeBtn() {
       window.history.back();
+    },
+    copyText() {
+      let tempText = "";
+      this.data.forEach(element => {
+        element.expression.forEach(x => {
+          tempText += x.sentenceEng + "\n";
+        });
+      });
+      var input = document.createElement("textarea");
+      input.innerHTML = tempText;
+      document.body.appendChild(input);
+      input.select();
+      var result = document.execCommand("copy");
+      document.body.removeChild(input);
+      this.$q.notify(
+        {
+          message  : "coppied",
+          color : "secondary"
+        }
+      )
+      return result;
     }
   },
   mounted() {
