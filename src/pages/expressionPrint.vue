@@ -62,7 +62,7 @@
                       <div class="col q-px-md q-mb-md">
                         <div>
                           <span v-if="speakerList.length">{{
-                            speakerList.filter(x => x.nameEng == val.speaker)[0]
+                            speakerList.filter(x => x.id == val.speaker)[0]
                               .nameTh
                           }}</span>
                         </div>

@@ -183,7 +183,7 @@
         >
           <div class="q-px-md q-pt-md q-pb-sm text-subtitle1">
             {{
-              speakerOptions.filter(x => x.nameEng == item2.speaker)[0].nameTh
+              speakerOptions.filter(x => x.id == item2.speaker)[0].nameTh
             }}
           </div>
 
@@ -417,7 +417,11 @@ export default {
         .then(doc => {
           let temp = [];
           doc.forEach(res => {
-            temp.push(res.data());
+            let newData = {
+              id:res.id,
+              ...res.data()
+            }
+            temp.push(newData);
           });
 
           this.loadDataExpression();

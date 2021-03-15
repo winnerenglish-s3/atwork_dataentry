@@ -463,7 +463,7 @@ export default {
             };
 
             let speakerName = this.speakerOptions.filter(
-              x => x.nameEng == element.data().speaker
+              x => x.id == element.data().speaker
             )[0].nameTh;
 
             let final = {
@@ -599,7 +599,11 @@ export default {
         .then(doc => {
           let temp = [];
           doc.forEach(res => {
-            temp.push(res.data());
+            let newData = {
+              id:res.id,
+              ...res.data()
+            };
+            temp.push(newData);
           });
 
           this.speakerOptions = temp;

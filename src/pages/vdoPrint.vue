@@ -85,17 +85,7 @@ export default {
   },
   methods: {
     //โชว์ชื่อผู้พูด
-    showSpeakerName(speaker) {
-      let res = "ลูกค้า";
-      if (speaker == "employee") {
-        res = "พนักงาน#1";
-      } else if (speaker == "employee2") {
-        res = "พนักงาน#2";
-      } else if (speaker == "people") {
-        res = "คนทั่วไป";
-      }
-      return res;
-    },
+    
     printBtn() {
       window.print();
     },
