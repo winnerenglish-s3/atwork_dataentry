@@ -66,7 +66,7 @@
                     <q-icon v-if="item2.isSound" class="q-mx-sm" name="fas fa-volume-up"></q-icon>
                     <span
                       :class="{'bg-green text-white':item.correctAnswer==index2+1}"
-                    >{{index2+1}}) {{item2.choice}}</span>
+                    >{{index2+1}}) <span v-html="item2.choice"></span></span>
                   </div>
                   <div class="q-pl-md">{{item.description}}</div>
                 </div>
