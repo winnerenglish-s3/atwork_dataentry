@@ -226,7 +226,7 @@
                     ? 'bg-secondary text-white '
                     : ''
                 "
-              >{{ index2 + 1 + ") " + items.choice }}</span>
+              >{{ index2 + 1 + ") "   }} <span v-html="items.choice"></span></span>
             </div>
           </div>
         </div>

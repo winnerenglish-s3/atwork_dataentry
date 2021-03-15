@@ -10,7 +10,7 @@
           dense
           :error="isErrorNameHotel"
           :error-message="'ชื่อโรงแรมนี้มีอยู่แล้ว'"
-          :rules="[value => !!value ]"
+          :rules="[value => !!value]"
         ></q-input>
       </div>
       <div>
@@ -20,7 +20,7 @@
           ref="adminName"
           outlined
           dense
-          :rules="[value => !!value ]"
+          :rules="[value => !!value]"
         ></q-input>
       </div>
 
@@ -31,7 +31,7 @@
           ref="adminPhone"
           outlined
           dense
-          :rules="[value => !!value ]"
+          :rules="[value => !!value]"
         ></q-input>
       </div>
       <div>
@@ -41,7 +41,7 @@
           ref="email"
           outlined
           dense
-          :rules="[value => !!value ]"
+          :rules="[value => !!value]"
           :readonly="$route.name == 'hotelEdit' ? true : false"
         ></q-input>
       </div>
@@ -52,22 +52,45 @@
           ref="password"
           outlined
           dense
-          :rules="[value => !!value ]"
+          :rules="[value => !!value]"
         ></q-input>
       </div>
       <div v-else>
         <div>รหัสผ่านผู้ดูแลระบบ</div>
-        <q-input ref="password" value="45646546" type="password" readonly outlined dense></q-input>
+        <q-input
+          ref="password"
+          value="45646546"
+          type="password"
+          readonly
+          outlined
+          dense
+        ></q-input>
       </div>
       <div class="row">
         <div class="col-6 q-pr-sm q-py-md" align="right">
-          <q-btn @click="cancelAddHotel()" dense style="width:150px" outline label="ยกเลิก"></q-btn>
+          <q-btn
+            @click="cancelAddHotel()"
+            dense
+            style="width:150px"
+            outline
+            label="ยกเลิก"
+          ></q-btn>
         </div>
         <div class="col-6 q-pl-sm q-py-md">
-          <q-btn @click="saveHotel()" dense color="blue-grey-10" style="width:150px" label="บันทึก"></q-btn>
+          <q-btn
+            @click="saveHotel()"
+            dense
+            color="blue-grey-10"
+            style="width:150px"
+            label="บันทึก"
+          ></q-btn>
         </div>
       </div>
-      <dialog-center :type="6" v-if="isAddDialogSucess" @autoClose="addDialogSucess"></dialog-center>
+      <dialog-center
+        :type="6"
+        v-if="isAddDialogSucess"
+        @autoClose="addDialogSucess"
+      ></dialog-center>
     </div>
   </q-page>
 </template>
@@ -77,7 +100,7 @@ import { db, axios } from "../router";
 import dialogCenter from "../components/dialogSetting";
 export default {
   components: {
-    dialogCenter,
+    dialogCenter
   },
   data() {
     return {
@@ -86,13 +109,13 @@ export default {
         adminName: "",
         adminPhone: "",
         email: "",
-        password: "",
+        password: ""
       },
       isAddDialogSucess: false,
       hotelList: "",
       nameHotelOld: "",
       isErrorNameHotel: false,
-      errorNameDepartmentMessage: "",
+      errorNameDepartmentMessage: ""
     };
   },
   methods: {
@@ -100,7 +123,10 @@ export default {
       this.$router.push("/hotelMain");
     },
     async isCheckName(val) {
-      let doc = await db.collection("hotel").where("name", "==", val).get();
+      let doc = await db
+        .collection("hotel")
+        .where("name", "==", val)
+        .get();
       return doc.size ? true : false;
     },
     async saveHotel() {
@@ -143,19 +169,19 @@ export default {
           email: this.datahotel.email,
           password: this.datahotel.password,
           accessProgram: ["HR"],
-          isHrAdmin: true,
+          isHrAdmin: true
         };
         let sendData = await axios.post(apiURL, registerData);
         if (sendData.data.code) {
           if (sendData.data.code == "auth/email-already-exists") {
             this.$q.notify({
               message: "มีอีเมลนี้ในระบบแล้ว",
-              color: "red",
+              color: "red"
             });
           } else {
             this.$q.notify({
               message: "กรุณาตรวจสอบข้อมูลใหม่อีกครั้ง",
-              color: "red",
+              color: "red"
             });
           }
           this.loadingHide();
@@ -167,13 +193,13 @@ export default {
 
         db.collection("hotel")
           .add(dataUpdate)
-          .then(async (doc) => {
+          .then(async doc => {
             let updateRegisterData = {
               uid: sendData.data.uid,
               displayName: this.datahotel.adminName,
               accessProgram: ["HR"],
               hotelId: doc.id,
-              isHrAdmin: true,
+              isHrAdmin: true
             };
 
             let apiURL =
@@ -188,7 +214,7 @@ export default {
           "https://us-central1-atwork-dee11.cloudfunctions.net/atworkFunctions/user/updateDisplayName";
         await axios.post(apiURL, {
           uid: this.datahotel.uid,
-          displayName: this.datahotel.adminName,
+          displayName: this.datahotel.adminName
         });
 
         let dataUpdate = { ...this.datahotel };
@@ -210,7 +236,7 @@ export default {
       db.collection("hotel")
         .doc(this.$route.params.hotelId)
         .get()
-        .then((doc) => {
+        .then(doc => {
           this.datahotel.name = doc.data().name;
           this.datahotel.adminName = doc.data().adminName;
           this.datahotel.adminPhone = doc.data().adminPhone;
@@ -219,15 +245,14 @@ export default {
           this.datahotel.uid = doc.data().uid;
           this.nameHotelOld = doc.data().name;
         });
-    },
+    }
   },
   mounted() {
     if (this.$route.name == "hotelEdit") {
       this.loadHotelEdit();
     }
-  },
+  }
 };
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>
